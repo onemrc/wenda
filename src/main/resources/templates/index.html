@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+<table border="1">
+    <tbody >
+        <tr>
+            <th>用户名</th>
+            <th>问题标题</th>
+            <th>问题创建时间</th>
+            <th>问题内容</th>
+            <th>多少条评论</th>
+        </tr>
+        <tr th:each="vo,iterStat : ${vos}">
+            <td th:text="${vo.userName}"></td>
+            <td th:text="${vo.title}"></td>
+            <td th:text="${vo.createTime}"></td>
+            <td th:text="${vo.content}"></td>
+            <td th:text="${vo.answerCount}"></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

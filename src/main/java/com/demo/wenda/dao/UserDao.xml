@@ -12,4 +12,5 @@
         WHERE
         <include refid="loginFields"/>
     </select>
+
 </mapper>

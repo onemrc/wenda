@@ -29,7 +29,7 @@ public class QuestionDaoTest {
 
         Date date = new Date();
         date.setTime(date.getTime());
-        question.setCreatedTime(date);
+        question.setCreateTime(date);
 
         question.setUserId(1);
         question.setTagId(1);

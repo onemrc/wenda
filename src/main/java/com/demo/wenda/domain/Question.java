@@ -28,7 +28,7 @@ public class Question {
     private String content;
 
     //问题发布时间
-    private Date createdTime;
+    private Date createTime;
 
 
     //回答数

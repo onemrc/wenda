@@ -1,23 +1,23 @@
 package com.demo.wenda.controller;
 
 import com.demo.wenda.domain.Question;
-import com.demo.wenda.domain.User;
-import com.demo.wenda.dto.QuestionDTO;
 import com.demo.wenda.service.QuestionService;
 import com.demo.wenda.service.UserService;
+import com.demo.wenda.vo.ViewObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/wenda")
 public class IndexController {
 
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
@@ -28,25 +28,20 @@ public class IndexController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/index")
+    @GetMapping(value = {"/","/index"})
     public String index(Model model){
         List<Question> questionList = questionService.getLatestQuestions(1,0,10);
 
-        List<QuestionDTO> vos = new ArrayList<>();
+        List<ViewObject> vos = new ArrayList<>();
+
 
         //数据封装
         for (Question question : questionList){
-            QuestionDTO questionDTO = new QuestionDTO();
-            questionDTO.setTitle(question.getTitle());
-            questionDTO.setAnswerCount(question.getAnswerCount());
+            ViewObject vo = new ViewObject();
+            vo.set("question",question);
+            vo.set("user",userService.getById(question.getUserId()));
 
-            User user = userService.getById(question.getUserId());
-            questionDTO.setUserName(user.getName());
-
-            questionDTO.setContent(question.getContent());
-            questionDTO.setCreateTime(question.getCreatedTime());
-
-            vos.add(questionDTO);
+            vos.add(vo);
         }
 
         model.addAttribute("vos",vos);

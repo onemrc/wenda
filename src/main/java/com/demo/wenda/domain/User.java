@@ -43,7 +43,7 @@ public class User {
 
 
     //手机号
-    private Integer phone;
+    private Long phone;
 
     //邮箱
     private String email;

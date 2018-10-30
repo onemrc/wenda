@@ -1,5 +1,9 @@
 server:
   port: 8080
+
+#  url的前缀
+  servlet:
+    context-path: /wenda
 #
 mybatis:
   config-location: classpath:mybatis-config.xml
@@ -17,15 +21,15 @@ spring:
 
 
 
-#
-#
-###  freemarker config
-##  freemarker:
-##    cache: false
-##    check-template-location: true
-##    content-type: text/html
-##    charset: UTF-8
-##    template-loader-path: classpath:/templates/
+
+#  freemarker config
+  freemarker:
+    cache: false
+    check-template-location: true
+    content-type: text/html
+    charset: UTF-8
+    template-loader-path: classpath:/templates/
+    suffix: .html
 #
 ## redis
 #redis:

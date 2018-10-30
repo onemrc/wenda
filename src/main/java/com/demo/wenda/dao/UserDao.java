@@ -9,10 +9,10 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserDao {
     String TABLE_NAME = "user";
-    String INSERT_FIELDS = "name,password,salt,sex";
+    String INSERT_FIELDS = "name,password,salt,sex,email,phone";
 
 
-    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{name},#{password},#{salt},#{sex})"})
+    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{name},#{password},#{salt},#{sex},#{email},#{phone})"})
     int addUser(User user);
 
     @Select({"select * from",TABLE_NAME,"where user_id = #{userId}"})
@@ -20,4 +20,10 @@ public interface UserDao {
 
 
     User queryUser(@Param("str")  String str,@Param("password") String password);
+
+    @Select({"select salt from",TABLE_NAME,"where name = #{str} OR email = #{str}"})
+    String getSaltByStr(String str);
+
+    @Select({"select * from",TABLE_NAME,"where phone = #{str} OR email = #{str}"})
+    User selectUserPhoneOrEmail(String str);
 }

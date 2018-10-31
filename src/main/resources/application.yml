@@ -32,14 +32,14 @@ spring:
     suffix: .html
 #
 ## redis
-#redis:
-#host: 47.106.215.221
-#port: 6379
-#timeout: 10000
-#password: 123456
-#jedis:
-#pool:
-#min-idle: 0
-#max-idle: 8
-#max-active: 100
-#max-wait: 10000
+  redis:
+    host: 47.106.215.221
+    port: 6379
+    timeout: 10000
+    password: 123456
+    jedis:
+      pool:
+        max-wait: 10000
+        min-idle: 0
+        max-idle: 8
+        max-active: 10

@@ -16,4 +16,8 @@ public class QuestionService {
         return questionDao.selectLatestQuestions(userId,offset,limit);
     }
 
+    public int addQuestion(Question question){
+        return questionDao.addQuestion(question);
+    }
+
 }

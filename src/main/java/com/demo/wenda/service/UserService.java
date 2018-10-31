@@ -2,19 +2,29 @@ package com.demo.wenda.service;
 
 import com.demo.wenda.dao.UserDao;
 import com.demo.wenda.domain.User;
+import com.demo.wenda.redis.UserKey;
 import com.demo.wenda.utils.MD5Util;
+import com.demo.wenda.utils.UUIUtil;
 import com.demo.wenda.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class UserService {
+
+    public static final String COOKIE_NAME_TOKEN = "token";
+
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    RedisService redisService;
 
     public User getById(Integer id) {
         return userDao.getById(id);
@@ -24,10 +34,40 @@ public class UserService {
         return userDao.addUser(user);
     }
 
-    public User login(String str, String password) {
+    public Boolean login(HttpServletResponse response,String str, String password) {
         String salt = userDao.getSaltByStr(str);
         String real_pass = MD5Util.md5(password + salt);
-        return userDao.queryUser(str, real_pass);
+
+        //验证
+        User user = userDao.queryUser(str, real_pass);
+
+        if (user == null){
+            return false;
+        }
+
+
+        addCookie(response,user);
+        return true;
+    }
+
+    /*
+    将User存进redis，并生成一个cookie
+     */
+    private void addCookie(HttpServletResponse response,User user){
+        //生成一个token
+        String token = UUIUtil.uuid();
+
+        //存入缓存
+        redisService.set(UserKey.token,token,user);
+
+        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN,token);
+
+        //Cookie有效期 == redis有效期
+//        cookie.setMaxAge(UserKey.token.getExpireDate());
+
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
     }
 
     public Map<String, String> register(String str, String password) {

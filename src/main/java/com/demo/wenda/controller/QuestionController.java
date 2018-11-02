@@ -1,5 +1,6 @@
 package com.demo.wenda.controller;
 
+import com.demo.wenda.domain.HostHolder;
 import com.demo.wenda.domain.Question;
 import com.demo.wenda.service.QuestionService;
 import com.demo.wenda.service.SensitiveService;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
 @Controller
@@ -19,23 +21,19 @@ public class QuestionController {
     QuestionService questionService;
 
     @Autowired
-    SensitiveService sensitiveService;
+    HostHolder hostHolder;
 
 
-    public Question addQuestion(Question question){
-        //html标签过滤
-        question.setContent(HtmlUtils.htmlEscape(question.getContent()));
-        question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
 
-        //敏感词过滤
-        question.setContent(sensitiveService.filter(question.getContent()));
-        question.setTitle(sensitiveService.filter(question.getTitle()));
 
-         return question;
+    @RequestMapping(value = "/add")
+    public void add(@RequestParam("title") String title,
+                        @RequestParam("content") String content){
+        Question question = new Question();
+        question.setTitle(title);
+        question.setContent(content);
+
+
+
     }
-
-//    @RequestMapping(value = "/add")
-//    public String addQuestion(){
-//
-//    }
 }

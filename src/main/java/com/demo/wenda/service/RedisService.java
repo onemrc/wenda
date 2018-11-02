@@ -1,6 +1,8 @@
 package com.demo.wenda.service;
 
+import com.demo.wenda.domain.User;
 import com.demo.wenda.redis.KeyPrefix;
+import com.demo.wenda.redis.UserKey;
 import com.demo.wenda.utils.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,4 +130,11 @@ public class RedisService {
             jedis.close();
         }
     }
+
+//    public static void main(String[] args) {
+//        RedisService redisService = new RedisService();
+//        User  user =  redisService.get(UserKey.token,"df015cbe3972406b9b40d96ecac38b80", User.class);
+//        System.out.println(user.getName());
+//
+//    }
 }

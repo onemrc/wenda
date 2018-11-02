@@ -70,6 +70,14 @@ public class UserService {
         response.addCookie(cookie);
     }
 
+    /*
+    将User从redis中取出
+     */
+    public User getByToken(String token){
+        return redisService.get(UserKey.token,token,User.class);
+    }
+
+
     public Map<String, String> register(String str, String password) {
         Map<String, String> map = new HashMap<>();
 

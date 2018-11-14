@@ -11,16 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LoginRequiredInterceptor implements HandlerInterceptor{
 
-    @Autowired
-    HostHolder hostHolder;
+    private HostHolder hostHolder;
 
+    @Autowired
+    public LoginRequiredInterceptor(HostHolder hostHolder) {
+        this.hostHolder = hostHolder;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (hostHolder.getUsers() == null){
             //用户没登录
             //跳到登录页面，并携带当前页面参数
-            response.sendRedirect("/reg?next=" + request.getRequestURI());
+            response.sendRedirect("/login?next=" + request.getRequestURI());
         }
         return true;
     }

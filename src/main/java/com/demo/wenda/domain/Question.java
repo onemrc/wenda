@@ -32,5 +32,8 @@ public class Question {
 
 
     //回答数
-    private Integer answerCount;
+    private Integer commentCount;
+
+    //被浏览数
+    private Integer lookCount;
 }

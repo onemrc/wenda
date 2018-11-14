@@ -22,15 +22,19 @@ public class IndexController {
 
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @Autowired
-    QuestionService questionService;
+    private final QuestionService questionService;
+
+    private final UserService userService;
 
     @Autowired
-    UserService userService;
+    public IndexController(QuestionService questionService, UserService userService) {
+        this.questionService = questionService;
+        this.userService = userService;
+    }
 
     @GetMapping(value = {"/","/index"})
     public String index(Model model){
-        List<Question> questionList = questionService.getLatestQuestions(1,0,10);
+        List<Question> questionList = questionService.getUserLatestQuestions(1,0,10);
 
         List<ViewObject> vos = new ArrayList<>();
 
@@ -54,5 +58,23 @@ public class IndexController {
         return "home";
     }
 
+    @GetMapping(value = {"/new"})
+    public String LatestQuestion(Model model){
+        List<Question> questionList = questionService.getLatestQuestions();
+
+        List<ViewObject> vos = new ArrayList<>();
+
+        //数据封装
+        for (Question question : questionList){
+            ViewObject vo = new ViewObject();
+            vo.set("question",question);
+
+
+            vos.add(vo);
+        }
+        model.addAttribute("vos",vos);
+
+        return "questionList";
+    }
 
 }

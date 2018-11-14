@@ -24,5 +24,8 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //访问所有页面都需要对用户的token进行验证
         registry.addInterceptor(passportInterceptor);
+
+        //设置当访问user页面时,走此拦截器
+//        registry.addInterceptor(loginRequiredInterceptor);
     }
 }

@@ -20,8 +20,13 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+
+    private UserService userService;
+
     @Autowired
-    UserService userService;
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/do_login")
     public String doLogin(HttpServletResponse response
@@ -33,7 +38,7 @@ public class LoginController {
         } else {
             logger.info("登录失败");
         }
-        return "redirect:/";
+        return "redirect:/new";
     }
 
     @RequestMapping(value = "/reg", method = RequestMethod.POST)

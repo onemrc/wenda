@@ -16,21 +16,24 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class PassportInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    UserService userService;
+    private UserService userService;
+
+    private HostHolder hostHolder;
 
     @Autowired
-    HostHolder hostHolder;
-
+    public PassportInterceptor(UserService userService, HostHolder hostHolder) {
+        this.userService = userService;
+        this.hostHolder = hostHolder;
+    }
 
     /*
     在处理controller之前，调用preHandle
-     */
+    */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         //从redis取出User
-        User user  = getUser(request);
+        User user = getUser(request);
 
         //放入hostHolder上下文中
         hostHolder.setUsers(user);
@@ -44,7 +47,7 @@ public class PassportInterceptor implements HandlerInterceptor {
      */
     private User getUser(HttpServletRequest request) {
         String cookieToken = getCookieValue(request, UserService.COOKIE_NAME_TOKEN);
-        if (StringUtils.isEmpty(cookieToken)){
+        if (StringUtils.isEmpty(cookieToken)) {
             return null;
         }
 

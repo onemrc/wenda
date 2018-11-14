@@ -1,8 +1,11 @@
 package com.demo.wenda.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
-public class Converter {
+import java.util.Map;
+
+public class ConverterUtil {
     /*
     将一个bean转化为String
      */
@@ -38,5 +41,28 @@ public class Converter {
         } else {
             return JSON.toJavaObject(JSON.parseObject(str), clazz);
         }
+    }
+
+
+    public static String getJSONString(int code){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        return jsonObject.toString();
+    }
+
+    public static String getJSONString(int code,String msg){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        return jsonObject.toString();
+    }
+
+    public static String getJSONString(int code, Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
+        }
+        return json.toJSONString();
     }
 }

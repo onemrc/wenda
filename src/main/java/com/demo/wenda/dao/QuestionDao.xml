@@ -6,7 +6,7 @@
 
     <sql id="table">question</sql>
     <sql id="selectFields">*</sql>
-    <select id="selectLatestQuestions" resultType="Question">
+    <select id="selectUserLatestQuestions" resultType="Question">
     SELECT
     <include refid="selectFields"/>
     FROM

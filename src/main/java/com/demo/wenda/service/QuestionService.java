@@ -10,14 +10,24 @@ import java.util.List;
 
 @Service
 public class QuestionService {
-    @Autowired
-    QuestionDao questionDao;
+
+    private QuestionDao questionDao;
+
+
+    private SensitiveService sensitiveService;
 
     @Autowired
-    SensitiveService sensitiveService;
+    public QuestionService(QuestionDao questionDao, SensitiveService sensitiveService) {
+        this.questionDao = questionDao;
+        this.sensitiveService = sensitiveService;
+    }
 
-    public List<Question> getLatestQuestions(int userId,int offset,int limit){
-        return questionDao.selectLatestQuestions(userId,offset,limit);
+    public List<Question> getUserLatestQuestions(int userId, int offset, int limit){
+        return questionDao.selectUserLatestQuestions(userId,offset,limit);
+    }
+
+    public List<Question> getLatestQuestions(){
+        return questionDao.selectLatestQuestions();
     }
 
     public int addQuestion(Question question){
@@ -30,6 +40,10 @@ public class QuestionService {
         question.setTitle(sensitiveService.filter(question.getTitle()));
 
         return questionDao.addQuestion(question) > 0 ? question.getQuestionId() : 0;
+    }
+
+    public Question getById(int id){
+        return questionDao.getById(id);
     }
 
 }

@@ -26,4 +26,7 @@ public interface UserDao {
 
     @Select({"select * from",TABLE_NAME,"where phone = #{str} OR email = #{str}"})
     User selectUserPhoneOrEmail(String str);
+
+    @Select({"select * from",TABLE_NAME,"where name = #{name}"})
+    User selectUserByName(String name);
 }

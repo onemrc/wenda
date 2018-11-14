@@ -22,28 +22,37 @@ public class QuestionDaoTest {
 
     @Test
     public void addQuestion() throws Exception {
-        Question question = new Question();
-        question.setTitle("如何看待英雄联盟 S8 四强赛 IG 3:0 淘汰 G2 杀入决赛？");
-        question.setContent("S4 后中国队再次杀入决赛");
-        question.setAnonymous(QuestionStatusEnum.IS_ANONYMOUS.getCode());
-
-        Date date = new Date();
-        date.setTime(date.getTime());
-        question.setCreateTime(date);
-
-        question.setUserId(1);
-        question.setTagId(1);
+        for (int i=0;i<10;i++){
 
 
-       Assert.assertNotNull(questionDao.addQuestion(question));
+            Question question = new Question();
+            question.setTitle("Title -"+i);
+            question.setContent("balabala");
+            question.setAnonymous(QuestionStatusEnum.IS_ANONYMOUS.getCode());
+
+            Date date = new Date();
+            date.setTime(date.getTime());
+            question.setCreateTime(date);
+
+            question.setUserId(1);
+            question.setTagId(1);
+
+            question.setLookCount(0);
+            question.setCommentCount(0);
+
+
+            Assert.assertNotNull(questionDao.addQuestion(question));
+        }
+
     }
+
 
     @Test
     public void selectLastQuestions() throws Exception {
 
-        Assert.assertNotNull(questionDao.selectLatestQuestions(1,0,10));
+        Assert.assertNotNull(questionDao.selectUserLatestQuestions(1,0,10));
 
-        System.out.print(questionDao.selectLatestQuestions(1,0,10));
+        System.out.print(questionDao.selectUserLatestQuestions(1,0,10));
     }
 
 }

@@ -10,10 +10,14 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    @Autowired
-    CommentDao commentDao;
+    private CommentDao commentDao;
 
-    public List<Comment> getCommentByEntity(int entityId,int entityType){
+    @Autowired
+    public CommentService(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
+
+    public List<Comment> getCommentByEntity(int entityId, int entityType){
         return commentDao.selectCommentByEntity(entityId,entityType);
     }
 

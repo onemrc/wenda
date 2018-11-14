@@ -63,7 +63,7 @@ public class UserService {
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN,token);
 
         //Cookie有效期 == redis有效期
-//        cookie.setMaxAge(UserKey.token.getExpireDate());
+        cookie.setMaxAge(UserKey.token.getExpireDate());
 
         cookie.setPath("/");
 
@@ -115,5 +115,10 @@ public class UserService {
         userDao.addUser(user);
 
         return map;
+    }
+
+
+    public User getUserByName(String name){
+        return userDao.selectUserByName(name);
     }
 }

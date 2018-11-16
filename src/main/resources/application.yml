@@ -6,7 +6,9 @@ server:
     context-path: /wenda
 #
 mybatis:
+  
   config-location: classpath:mybatis-config.xml
+
 
 #
 # mysql

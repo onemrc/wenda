@@ -15,6 +15,7 @@ public interface UserDao {
     @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{name},#{password},#{salt},#{sex},#{email},#{phone})"})
     int addUser(User user);
 
+
     @Select({"select * from",TABLE_NAME,"where user_id = #{userId}"})
     User getById(Integer userId);
 

@@ -21,7 +21,7 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public LoginController(UserService userService) {
@@ -29,10 +29,11 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/do_login")
-    public String doLogin(HttpServletResponse response
-            , @Valid LoginVO loginVo) {
+    public String doLogin(HttpServletResponse response,
+                          @RequestParam("str") String str,
+                          @RequestParam("password") String password) {
 
-        boolean result = userService.login(response, loginVo.getStr(), loginVo.getPassword());
+        boolean result = userService.login(response, str, password);
         if (result) {
             logger.info("用户登录成功");
         } else {

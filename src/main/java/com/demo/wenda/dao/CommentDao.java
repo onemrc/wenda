@@ -2,10 +2,7 @@ package com.demo.wenda.dao;
 
 import com.demo.wenda.domain.Comment;
 import com.demo.wenda.domain.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,4 +24,10 @@ public interface CommentDao {
 
     @Select({"select count(comment_id) from",TABLE_NAME,"where entity_id = #{entityId} and entityType = #{entityType}"})
     int getCommentCount(@Param("entityId") int entityId,@Param("entityType") int entityType);
+
+
+
+    @Update({"update set comment_status={statusCode}",TABLE_NAME," where entity_id = #{entityId} and entityType = #{entityType} and user_id=#{userId}"})
+    int deleteComment(@Param("entityId") int entityId,@Param("entityType") int entityType,@Param("userId") int userId,@Param("statusCode") int statusCode);
+
 }

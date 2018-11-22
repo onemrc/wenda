@@ -3,6 +3,8 @@ package com.demo.wenda.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ConverterUtil {
@@ -25,7 +27,7 @@ public class ConverterUtil {
         }
     }
 
-    /*
+  /*
     将一个String转化为bean
      */
     public static  <T> T stringToBean(String str, Class<T> clazz) {
@@ -65,4 +67,11 @@ public class ConverterUtil {
         }
         return json.toJSONString();
     }
+
+    public static String getJSONList(List list){
+        JSONObject json = new JSONObject();
+        json.put("list",list);
+        return json.toJSONString();
+    }
+
 }

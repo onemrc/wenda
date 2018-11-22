@@ -26,4 +26,5 @@ public interface QuestionDao {
     @Select({"select * from "+TABLE_NAME+" order by create_time desc"})
     List<Question> selectLatestQuestions();
 
+
 }

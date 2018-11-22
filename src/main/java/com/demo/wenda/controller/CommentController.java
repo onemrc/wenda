@@ -69,4 +69,27 @@ public class CommentController {
 
         return "redirect:/question/" + questionId;
     }
+
+
+    /**
+     * 删除一条回答
+     * @param answerId
+     * @param questionId 所属问题id
+     * @return
+     */
+    @RequestMapping(value = "/deleteAnswer", method = RequestMethod.POST)
+    public String addComment(@RequestParam("answerId") int answerId,
+                             @RequestParam("questionId") int questionId){
+        try{
+
+            //改变回答状态
+            commentService.deleteCommentByEntity(answerId,EntityType.ENTITY_QUESTION.getValue(),hostHolder.getUsers().getUserId(),CommentStatus.DELETED.getCode());
+
+
+        }catch (Exception e){
+            logger.error("删除回答失败:{}", e.getMessage());
+        }
+
+        return "redirect:/question/" + questionId;
+    }
 }

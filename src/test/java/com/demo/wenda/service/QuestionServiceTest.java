@@ -27,14 +27,14 @@ public class QuestionServiceTest {
 
 
     @Test
-    public void getLatestQuestions() throws Exception {
+    public void getLatestQuestions() {
         List<Question> questionList = questionService.getLatestQuestions();
 
         Assert.assertNotNull(questionList);
     }
 
     @Test
-    public void addQuestion() throws Exception{
+    public void addQuestionWithSensitive() {
         Question question = new Question();
         question.setTitle("Title -Sensitive");
         question.setContent("嫖娼\n" +
@@ -54,6 +54,29 @@ public class QuestionServiceTest {
         question.setCommentCount(0);
 
         Assert.assertNotEquals(0,questionService.addQuestion(question));
+    }
+
+    @Test
+    public void addQuestions() {
+        for (int i=0;i<10;i++){
+            Question question = new Question();
+            question.setTitle("Title -"+i);
+
+            question.setContent("This is Content -- "+i);
+
+            Date date = new Date();
+            date.setTime(date.getTime());
+            question.setCreateTime(date);
+
+            question.setAnonymous(QuestionStatusEnum.IS_ANONYMOUS.getCode());
+            question.setUserId(1);
+            question.setTagId(1);
+            question.setLookCount(0);
+            question.setCommentCount(0);
+
+            Assert.assertNotEquals(0,questionService.addQuestion(question));
+        }
+
     }
 
 }

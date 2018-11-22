@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    private CommentDao commentDao;
+    private final CommentDao commentDao;
 
     @Autowired
     public CommentService(CommentDao commentDao) {
@@ -27,5 +27,9 @@ public class CommentService {
 
     public int getCommentCount(int entityId,int entityType){
         return commentDao.getCommentCount(entityId,entityType);
+    }
+
+    public int deleteCommentByEntity(int entityId, int entityType,int UserId,int statusCode){
+        return commentDao.deleteComment(entityId,entityType,UserId,statusCode);
     }
 }

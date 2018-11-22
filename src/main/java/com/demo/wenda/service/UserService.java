@@ -20,11 +20,16 @@ public class UserService {
 
     public static final String COOKIE_NAME_TOKEN = "token";
 
-    @Autowired
-    UserDao userDao;
+
+    private final UserDao userDao;
+
+    private final RedisService redisService;
 
     @Autowired
-    RedisService redisService;
+    public UserService(UserDao userDao, RedisService redisService) {
+        this.userDao = userDao;
+        this.redisService = redisService;
+    }
 
     public User getById(Integer id) {
         return userDao.getById(id);

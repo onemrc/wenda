@@ -6,7 +6,7 @@ CREATE TABLE  user
 	name			varchar(30)		NOT NULL 	COMMENT'用户名',
 	password			varchar(128)	NOT NULL	COMMENT'用户密码',
 	salt			varchar(30)		NOT NULL	COMMENT'加密用',
-	sex			int(2)			NOT NULL 	DEFAULT 0 	COMMENT'性别：未知0，男1，女2',
+	sex			int(2)		 	 	COMMENT'性别：未知0，男1，女2',
 	introduction	varchar(128)			COMMENT'个人介绍',
 	head_url			varchar(128)			 COMMENT'头像路径',
 	department		varchar(30)			 	COMMENT'所在院系',

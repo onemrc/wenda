@@ -53,7 +53,7 @@ CREATE TABLE question
 
 	tag_id 				int(18)			NOT NULL COMMENT'问题标签',
 
-	createTime	date NOT NULL,
+	createTime	TIMESTAMP NOT NULL,
 
 	comment_count int(18) NOT NULL  COMMENT'回答数',
 
@@ -84,7 +84,7 @@ CREATE TABLE message
 )ENGINE=InnoDB;
 
 
--- 私信
+-- 评论
 CREATE TABLE comment
 (
   comment_id int(18)			NOT NULL	AUTO_INCREMENT,
@@ -104,21 +104,35 @@ CREATE TABLE comment
    primary key (comment_id)
 )ENGINE=InnoDB;
 
-
-
---
--- -- 问题的标签，用于归类话题
--- CREATE TABLE tag
+-- 用redis ,不用mysql
+-- -- 关注
+-- CREATE TABLE follow
 -- (
+--   follow_id int(18)			NOT NULL	AUTO_INCREMENT,
+--
+--   entity_id int(18)			NOT NULL	COMMENT'实体id',
+--
+--   entity_type int(5)			NOT NULL	COMMENT'实体类型',
+--
+--   user_id  int(18)			NOT NULL	COMMENT'用户id',
+--
+--   comment_status int(5)			NOT NULL	COMMENT'状态（删除）',
+--
+--   create_date timestamp NOT NULL,
 --
 --
--- 	tag_id 		int(18)			NOT NULL 	,
---
--- 	tag_name  	varchar(20)		NOT NULL 	COMMENT'标签名称',
---
---
--- 	primary key (tag_id)
+--    primary key (comment_id)
 -- )ENGINE=InnoDB;
+
+
+-- 问题的标签，用于归类话题
+CREATE TABLE tag
+ (
+	tag_id 		int(18)			NOT NULL 	,
+
+	tag_name  	varchar(20)		NOT NULL 	COMMENT'标签名称',
+primary key (tag_id)
+)ENGINE=InnoDB;
 
 
 -- -- 每个问题下的回答

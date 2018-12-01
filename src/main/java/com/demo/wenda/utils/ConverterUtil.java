@@ -3,7 +3,8 @@ package com.demo.wenda.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -68,10 +69,36 @@ public class ConverterUtil {
         return json.toJSONString();
     }
 
+    public static String getJSONString(Map<String, Object> map){
+        JSONObject json = new JSONObject();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
+        }
+        return json.toJSONString();
+    }
+
+
+    public static String getJSONString(Object object){
+        JSONObject json = new JSONObject();
+        json.put("data",object);
+        return json.toJSONString();
+    }
+
+
     public static String getJSONList(List list){
         JSONObject json = new JSONObject();
         json.put("list",list);
         return json.toJSONString();
+    }
+
+    /**
+     * date 格式化转 String
+     * @param time date
+     * @return
+     */
+    public static String dateToString(Date time){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(time);
     }
 
 }

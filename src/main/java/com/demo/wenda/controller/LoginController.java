@@ -54,6 +54,7 @@ public class LoginController {
                 return "login";
             }
             //注册成功，跳到首页
+            logger.info("用户注册成功:{}",str);
             return "redirect:/";
         } catch (Exception e) {
 //            e.printStackTrace();

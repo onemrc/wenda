@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,6 +39,9 @@ public class QuestionService {
         //敏感词过滤
         question.setContent(sensitiveService.filter(question.getContent()));
         question.setTitle(sensitiveService.filter(question.getTitle()));
+
+        Date date = new Date();
+        question.setCreateTime(date);
 
         return questionDao.addQuestion(question) > 0 ? question.getQuestionId() : 0;
     }

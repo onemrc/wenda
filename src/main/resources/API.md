@@ -104,3 +104,69 @@ GET /new
     ]
 }
 ```
+
+
+### 添加问题
+
+```
+POST /addQuestion
+```
+
+参数
+
+```
+"question_title":"让你用得最爽的 Windows 软件是什么？",
+"question_content":"求解balalaaasdasds",
+"create_date":2018-11-10 14:20,
+"tag_name":"软件",
+"anonymous":0
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
+ "data": []
+```
+
+
+### 问题详情页
+
+```
+GET /{question_id}
+```
+
+参数
+
+```
+
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
+ "data": [
+     "question_title":"让你用得最爽的 Windows 软件是什么？",
+     "question_content":"求解balalaaasdasds",
+     "tag_name":"软件",
+     "anonymous":0
+     
+     comment:[
+      {
+            "comment_content": "我觉得baabaa",
+            "create_date":2018-11-10 14:20,
+            "comment_count":2,     //评论数
+            "comment_id":30,         //评论id
+            "like_count":20000,
+                     
+            "user_name":"sdad",
+            "user_id":1,
+            "auth_name":"在校学生"
+           },
+     ]
+    
+ ]
+```

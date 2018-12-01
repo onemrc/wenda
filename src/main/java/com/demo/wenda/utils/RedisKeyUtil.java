@@ -10,6 +10,12 @@ public class RedisKeyUtil {
     // 用户所关注的实体(关注对象)
     private static final String FOLLOWEE = "FOLLOWEE";
 
+    //实体下的赞
+    private static final String LIKE_COMMENT = "LIKE_COMMENT";
+
+    //用户点赞的实体
+    private static final String USER_LIKE="USER_LIKE";
+
 
 
     /**
@@ -46,4 +52,43 @@ public class RedisKeyUtil {
     public static String getFolloweeKey(int userId,int entityType){
         return FOLLOWEE+SPILT+userId+SPILT+entityType;
     }
+
+
+    /**
+     * 某个评论下，点赞的人
+     *
+     * entityType: 2-COMMENT,3-ANSWER
+     *
+     *  example:"LIKE_COMMENT:3:1" 这个key
+     *  (3:ANSWER)
+     *  (1:commentId)
+     *  commentId = 1 的回答下，点赞的userId
+     *
+     *  example:"LIKE_COMMENT:2:2" 这个key
+     *  (2:COMMENT)
+     *  (2:commentId)
+     *  包含commentId = 2 的评论下，点赞的userId
+     *
+     * @param commentId 评论id
+     * @param entityType 评论实体类型
+     * @return
+     */
+    public static String getCommentLikeKey(int entityType,int commentId){return LIKE_COMMENT +SPILT+entityType+SPILT+commentId;}
+
+
+    /**
+     * 一个用户，给哪个评论或回答点赞
+     *
+     * entityType: 2-COMMENT,3-ANSWER
+     *
+     * example:"USER_LIKE:1:2" 这个key
+     * （1:userId）
+     *（2:COMMENT）
+     * 包含userId=1 的用户下，点赞的评论id
+     *
+     * @param userId
+     * @param entityType
+     * @return
+     */
+    public static String getUserLikeKey(int userId,int entityType){return USER_LIKE+SPILT+userId+SPILT+entityType;}
 }

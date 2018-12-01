@@ -89,11 +89,11 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
-		<!--freemarker插件-->
-		<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
+		<!--&lt;!&ndash;freemarker插件&ndash;&gt;-->
+		<!--<dependency>-->
+		<!--<groupId>org.springframework.boot</groupId>-->
+		<!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
+		<!--</dependency>-->
 
 		<!--thymeleaf-->
 		<!--<dependency>-->

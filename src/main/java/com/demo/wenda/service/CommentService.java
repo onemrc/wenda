@@ -29,7 +29,20 @@ public class CommentService {
         return commentDao.getCommentCount(entityId,entityType);
     }
 
-    public int deleteCommentByEntity(int entityId, int entityType,int UserId,int statusCode){
-        return commentDao.deleteComment(entityId,entityType,UserId,statusCode);
+    public int deleteCommentByEntity(int entityId, int entityType,int userId,int statusCode){
+        return commentDao.deleteComment(entityId,entityType,userId,statusCode);
     }
+
+    /**
+     * 某用户是否在某实体下已有评论
+     * @param entityId
+     * @param entityType
+     * @param userId
+     * @return
+     */
+    public Integer queryIdExist(int entityId, int entityType,int userId){
+        return commentDao.selectIdByEntityIdAndEntityType(entityId,entityType,userId);
+    }
+
+
 }

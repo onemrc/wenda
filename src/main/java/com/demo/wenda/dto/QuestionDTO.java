@@ -11,9 +11,10 @@ public class QuestionDTO {
 
     private String title;
 
-    private Date createTime;
+    private String createTime;
 
     private String content;
 
     private Integer answerCount;
+
 }

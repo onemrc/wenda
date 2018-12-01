@@ -194,6 +194,23 @@ public class RedisService {
         }
     }
 
+//    /**
+//     * 移除有序集中的一个或多个成员，不存在的成员将被忽略
+//     * @param key key
+//     * @param members 元素
+//     * @return
+//     */
+//    public Long zrem(String key,String... members){
+//        Jedis jedis = null;
+//        try {
+//            jedis = jedisPool.getResource();
+//
+//            return jedis.zrem(key,members);
+//        }finally {
+//            returnToPool(jedis);
+//        }
+//    }
+
 
 
 //    public static void main(String[] args) {

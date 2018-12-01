@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +44,8 @@ public class QuestionServiceTest {
                 "色情");
         question.setAnonymous(QuestionStatusEnum.IS_ANONYMOUS.getCode());
 
-        Date date = new Date();
-        date.setTime(date.getTime());
-        question.setCreateTime(date);
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        question.setCreateTime(time);
 
         question.setUserId(1);
         question.setTagId(1);
@@ -58,15 +58,16 @@ public class QuestionServiceTest {
 
     @Test
     public void addQuestions() {
-        for (int i=0;i<10;i++){
+        for (int i=0;i<1;i++){
             Question question = new Question();
             question.setTitle("Title -"+i);
 
             question.setContent("This is Content -- "+i);
 
-            Date date = new Date();
-            date.setTime(date.getTime());
-            question.setCreateTime(date);
+            question.setAnonymous(QuestionStatusEnum.IS_ANONYMOUS.getCode());
+
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+            question.setCreateTime(time);
 
             question.setAnonymous(QuestionStatusEnum.IS_ANONYMOUS.getCode());
             question.setUserId(1);

@@ -128,7 +128,7 @@ CREATE TABLE comment
 -- 问题的标签，用于归类话题
 CREATE TABLE tag
  (
-	tag_id 		int(18)			NOT NULL 	,
+	tag_id 		int(18)			NOT NULL 		AUTO_INCREMENT,
 
 	tag_name  	varchar(20)		NOT NULL 	COMMENT'标签名称',
 primary key (tag_id)

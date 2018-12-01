@@ -126,4 +126,8 @@ public class UserService {
     public User getUserByName(String name){
         return userDao.selectUserByName(name);
     }
+
+    public String getUserNameById(Integer id){
+        return userDao.getUserNameById(id);
+    }
 }

@@ -109,7 +109,7 @@ GET /new
 ### 添加问题
 
 ```
-POST /addQuestion
+POST /question/addQuestion
 ```
 
 参数
@@ -117,7 +117,6 @@ POST /addQuestion
 ```
 "question_title":"让你用得最爽的 Windows 软件是什么？",
 "question_content":"求解balalaaasdasds",
-"create_date":2018-11-10 14:20,
 "tag_name":"软件",
 "anonymous":0
 ```
@@ -127,7 +126,6 @@ POST /addQuestion
 ```
  "code": 200,
  "msg": "成功",
- "data": []
 ```
 
 
@@ -169,4 +167,61 @@ GET /{question_id}
      ]
     
  ]
+```
+
+### 给回答点赞
+
+```
+GET /addLikeToAnswer
+```
+
+参数
+
+```
+commentId:2
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
+```
+
+### 给回答取消点赞
+
+```
+GET /cancelLikeToAnswer
+```
+
+参数
+
+```
+commentId:2
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
+```
+
+### 添加回答
+
+```
+GET /addAnswer
+```
+
+参数
+
+```
+commentId:2
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
 ```

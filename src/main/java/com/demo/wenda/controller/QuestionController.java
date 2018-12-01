@@ -107,7 +107,7 @@ public class QuestionController {
         questionService.addQuestion(question);
 
 
-        return ConverterUtil.getJSONString(0,"发布成功");
+        return ConverterUtil.getJSONString(200,"发布成功");
     }
 
 

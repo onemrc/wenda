@@ -225,3 +225,43 @@ commentId:2
  "code": 200,
  "msg": "成功",
 ```
+
+
+### 发私信
+
+```
+POST /msg/add
+```
+
+参数
+
+```
+toName:"陈一"
+conten:"你好啊！balabalaa"
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
+```
+
+### 收藏问题
+
+```
+POST /addQuestionCollection
+```
+
+参数
+
+```
+questionId:2
+```
+
+返回
+
+```
+ "code": 200,
+ "msg": "成功",
+```

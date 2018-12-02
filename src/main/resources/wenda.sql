@@ -104,6 +104,23 @@ CREATE TABLE comment
    primary key (comment_id)
 )ENGINE=InnoDB;
 
+-- 收藏
+CREATE TABLE collection
+(
+  collection_id int(18)			NOT NULL	AUTO_INCREMENT,
+
+  entity_id int(18)			NOT NULL	COMMENT'实体id',
+
+  entity_type int(5)			NOT NULL	COMMENT'实体类型',
+
+  user_id  int(18)			NOT NULL	COMMENT'用户id',
+
+  create_date timestamp NOT NULL,
+
+   primary key (comment_id)
+)ENGINE=InnoDB;
+
+
 -- 用redis ,不用mysql
 -- -- 关注
 -- CREATE TABLE follow

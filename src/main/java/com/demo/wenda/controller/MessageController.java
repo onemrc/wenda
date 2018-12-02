@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 
+/**
+ * 站内信
+ */
 @Controller
 @RequestMapping(value = "/msg")
 public class MessageController {
@@ -73,10 +76,10 @@ public class MessageController {
 
             messageService.addMessage(message);
 
-            return ConverterUtil.getJSONString(0,"发送成功");
+            return ConverterUtil.getJSONString(200,"发送成功");
         }catch (Exception e){
             logger.error("私信发送异常：{}",e.getMessage());
-            return ConverterUtil.getJSONString(1,"私信发送失败");
+            return ConverterUtil.getJSONString(201,"私信发送失败");
         }
     }
 }

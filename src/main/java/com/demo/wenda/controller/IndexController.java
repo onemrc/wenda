@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 问题展示页
+ */
 @RestController
 public class IndexController {
 

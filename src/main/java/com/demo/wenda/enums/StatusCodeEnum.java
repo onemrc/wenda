@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum StatusCodeEnum {
     OK(200,"成功"),
 
+    COLLECTION_FAIL(111,"收藏失败")
     ;
 
 

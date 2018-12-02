@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
+/**
+ * 登录注册
+ */
 @Controller
 public class LoginController {
 

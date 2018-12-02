@@ -2,6 +2,7 @@ package com.demo.wenda.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.demo.wenda.enums.StatusCodeEnum;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class ConverterUtil {
     }
 
 
-    public static String getJSONString(int code){
+    public static String getJSONString(Integer code){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",code);
         return jsonObject.toString();
@@ -74,6 +75,13 @@ public class ConverterUtil {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             json.put(entry.getKey(), entry.getValue());
         }
+        return json.toJSONString();
+    }
+
+    public static String getJSONString(StatusCodeEnum statusCodeEnum){
+        JSONObject json = new JSONObject();
+        json.put("code",statusCodeEnum.getCode());
+        json.put("massage",statusCodeEnum.getMassage());
         return json.toJSONString();
     }
 

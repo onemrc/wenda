@@ -185,7 +185,7 @@ commentId:2
 
 ```
  "code": 200,
- "msg": "成功",
+ "likeCount": 10,
 ```
 
 ### 给回答取消点赞

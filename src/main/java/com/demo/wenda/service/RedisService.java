@@ -194,6 +194,34 @@ public class RedisService {
         }
     }
 
+    /*
+    将一个或多个值插入到链表头部
+     */
+    public Long lpush(String key,String value){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.lpush(key,value);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。
+     */
+    public List<String> brpop(int timeout, String... keys){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.brpop(timeout,keys);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
 //    /**
 //     * 移除有序集中的一个或多个成员，不存在的成员将被忽略
 //     * @param key key

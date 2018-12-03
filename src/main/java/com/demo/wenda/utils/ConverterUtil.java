@@ -61,6 +61,13 @@ public class ConverterUtil {
         return jsonObject.toString();
     }
 
+    public static String getJSONString(int code,String msg,Long count){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put(msg,count);
+        return jsonObject.toString();
+    }
+
     public static String getJSONString(int code, Map<String, Object> map) {
         JSONObject json = new JSONObject();
         json.put("code", code);

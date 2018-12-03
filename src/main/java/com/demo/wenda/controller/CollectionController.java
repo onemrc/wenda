@@ -62,7 +62,7 @@ public class CollectionController {
      * @param questionId 问题id
      * @return
      */
-    @RequestMapping(value = "/addQuestionCollection", method = RequestMethod.POST)
+    @RequestMapping(value = "/removeQuestionCollection", method = RequestMethod.POST)
     @ResponseBody
     public String remove(@RequestParam("questionId") int questionId){
         //当前用户

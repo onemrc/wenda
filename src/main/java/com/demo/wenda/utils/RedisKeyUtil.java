@@ -16,6 +16,9 @@ public class RedisKeyUtil {
     //用户点赞的实体
     private static final String USER_LIKE="USER_LIKE";
 
+    //异步时间队列
+    private static final String EVENT_QUEUE = "EVENT_QUEUE";
+
 
 
     /**
@@ -91,4 +94,9 @@ public class RedisKeyUtil {
      * @return
      */
     public static String getUserLikeKey(int userId,int entityType){return USER_LIKE+SPILT+userId+SPILT+entityType;}
+
+
+    public static String getEventQueueKey(){
+        return EVENT_QUEUE;
+    }
 }

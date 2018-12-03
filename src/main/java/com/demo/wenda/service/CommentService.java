@@ -44,5 +44,12 @@ public class CommentService {
         return commentDao.selectIdByEntityIdAndEntityType(entityId,entityType,userId);
     }
 
+    public Integer getEntityIdByCommentId(int commentId){
+        return commentDao.getEntityId(commentId);
+    }
+
+    public Comment getCommentById(int commentId){
+        return commentDao.getCommentById(commentId);
+    }
 
 }

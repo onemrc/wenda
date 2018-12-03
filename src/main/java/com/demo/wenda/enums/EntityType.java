@@ -17,5 +17,4 @@ public enum  EntityType {
         this.value = value;
     }
 
-
 }

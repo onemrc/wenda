@@ -42,6 +42,12 @@ public class MessageController {
     }
 
 
+    /**
+     * 发私信
+     * @param toName 接收者昵称
+     * @param content 内容
+     * @return
+     */
     @PostMapping(value = {"/add"})
     @ResponseBody
     public String add(@RequestParam("toName") String toName,

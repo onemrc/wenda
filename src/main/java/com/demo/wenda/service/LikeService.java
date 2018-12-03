@@ -31,7 +31,7 @@ public class LikeService {
      * @param entityType 评论类型
      * @return
      */
-    public boolean commentLike(int userId,int commentId,int entityType){
+    public Long commentLike(int userId,int commentId,int entityType){
 
         //被点赞对象的key（某个评论被谁点赞了）
         String commentLikeKey = RedisKeyUtil.getCommentLikeKey(entityType,commentId);
@@ -54,7 +54,10 @@ public class LikeService {
         //执行事务
         List<Object> res = redisService.exec(transaction, jedis);
 
-        return res.size() == 2 && (Long) res.get(0) > 0 && (Long) res.get(1) > 0;
+        //获取点赞人数
+        return redisService.zcard(commentLikeKey);
+
+//        return res.size() == 2 && (Long) res.get(0) > 0 && (Long) res.get(1) > 0;
     }
 
     /**

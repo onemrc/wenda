@@ -16,7 +16,7 @@ public interface CommentDao {
     int addComment(Comment comment);
 
     @Select({"select * from",TABLE_NAME,"where comment_id = #{commentId}"})
-    User getCommentById(Integer commentId);
+    Comment getCommentById(Integer commentId);
 
     @Select({"select * from",TABLE_NAME,"where entity_id = #{entityId} and entity_type = #{entityType} order by create_date desc"})
     List<Comment> selectCommentByEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
@@ -32,4 +32,9 @@ public interface CommentDao {
 
     @Select({"select comment_id from",TABLE_NAME,"where entity_id = #{entityId} and entity_type = #{entityType} and user_id = #{userId}"})
     Integer selectIdByEntityIdAndEntityType(@Param("entityId") int entityId,@Param("entityType") int entityType,@Param("userId") int userId);
+
+
+    @Select({"select entity_id from",TABLE_NAME,"where comment_id = #{commentId}"})
+    Integer getEntityId(int commentId);
+
 }

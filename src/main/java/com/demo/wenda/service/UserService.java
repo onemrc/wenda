@@ -6,6 +6,7 @@ import com.demo.wenda.redis.UserKey;
 import com.demo.wenda.utils.MD5Util;
 import com.demo.wenda.utils.UUIUtil;
 import com.demo.wenda.utils.ValidatorUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,6 +118,7 @@ public class UserService {
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
         user.setHeadUrl("xx");
         user.setPassword(MD5Util.md5(password + user.getSalt()));
+        user.setIntroduction("这个人很赖，没有个人介绍..");
         userDao.addUser(user);
 
         return map;
@@ -129,5 +131,18 @@ public class UserService {
 
     public String getUserNameById(Integer id){
         return userDao.getUserNameById(id);
+    }
+
+    public String getIntroductionById(Integer id){
+        return userDao.getIntroductionById(id);
+    }
+
+    /**
+     * 用户名或邮箱是否已存在
+     * @param str
+     * @return
+     */
+    public boolean strIsExist(String str){
+        return userDao.selectUserPhoneOrEmail(str) ==null;
     }
 }

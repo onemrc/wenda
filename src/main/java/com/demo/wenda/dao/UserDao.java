@@ -33,4 +33,9 @@ public interface UserDao {
 
     @Select({"select name from",TABLE_NAME,"where user_id = #{id}"})
     String getUserNameById(Integer id);
+
+    @Select({"select introduction from",TABLE_NAME,"where user_id = #{id}"})
+    String getIntroductionById(Integer id);
+
+
 }

@@ -151,6 +151,16 @@ CREATE TABLE tag
 primary key (tag_id)
 )ENGINE=InnoDB;
 
+-- 每个问题拥有的标签
+CREATE TABLE question_tag
+ (
+	question_tag_id 		int(18)			NOT NULL 		AUTO_INCREMENT,
+
+	quesion_id  		int(18)	NOT NULL ,
+	tag_id    int(18)	NOT NULL ,
+primary key (question_tag_id)
+)ENGINE=InnoDB;
+
 
 -- -- 每个问题下的回答
 -- CREATE TABLE answer

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -42,7 +43,7 @@ public class LoginController {
         } else {
             logger.info("登录失败");
         }
-        return "redirect:/new";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
@@ -70,6 +71,7 @@ public class LoginController {
     public String to_login() {
         return "login";
     }
+
 
 
 }

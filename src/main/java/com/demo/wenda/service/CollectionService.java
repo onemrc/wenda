@@ -51,4 +51,13 @@ public class CollectionService {
 
         return collectionDAO.addComment(collection)!=null;
     }
+
+    /**
+     *
+     * @param userId
+     * @return 某用户收藏的实体数
+     */
+    public Integer getUserCollectionCount(int userId){
+        return collectionDAO.getUserCollectionCount(userId);
+    }
 }

@@ -35,7 +35,6 @@ spring:
     check-template-location: true
     content-type: text/html
     charset: UTF-8
-    template-loader-path: classpath:/templates/
     suffix: .html
 #
 ## redis

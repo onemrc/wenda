@@ -1,11 +1,12 @@
 package com.demo.wenda.controller;
 
+import com.demo.wenda.domain.HostHolder;
 import com.demo.wenda.domain.Question;
+import com.demo.wenda.domain.User;
+import com.demo.wenda.dto.HostUserDTO;
 import com.demo.wenda.dto.QuestionDTO;
 import com.demo.wenda.enums.EntityType;
-import com.demo.wenda.service.CommentService;
-import com.demo.wenda.service.QuestionService;
-import com.demo.wenda.service.UserService;
+import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
 import com.demo.wenda.utils.ResultVoUtil;
 import com.demo.wenda.vo.ResultVo;
@@ -22,15 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 问题展示页
  */
-@RestController
+@Controller
 public class IndexController {
 
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
@@ -41,28 +39,68 @@ public class IndexController {
 
     private final CommentService commentService;
 
+    private final TagService tagService;
+
+    private final HostHolder hostHolder;
+
+    private final FollowService followService;
+
+    private final CollectionService collectionService;
+
+
     @Autowired
-    public IndexController(QuestionService questionService, UserService userService, CommentService commentService) {
+    public IndexController(QuestionService questionService, UserService userService, CommentService commentService, TagService tagService, HostHolder hostHolder, FollowService followService, CollectionService collectionService) {
         this.questionService = questionService;
         this.userService = userService;
         this.commentService = commentService;
+        this.tagService = tagService;
+        this.hostHolder = hostHolder;
+        this.followService = followService;
+        this.collectionService = collectionService;
     }
 
     @GetMapping(value = {"/","/index"})
     public String index(Model model){
-        List<Question> questionList = questionService.getUserLatestQuestions(1,0,10);
+        List<Question> questionList = questionService.getLatestQuestions();
 
         List<ViewObject> vos = new ArrayList<>();
 
 
-        //数据封装
+        //问题数据封装
         for (Question question : questionList){
             ViewObject vo = new ViewObject();
             vo.set("question",question);
             vo.set("user",userService.getById(question.getUserId()));
+//            vo.set("tagName",tagService.getNameById(question.getTagId()));
+
+            vo.set("lookCount",questionService.getLookCount(question.getQuestionId()));
+
+            //获取tags
+            Set<String> tags = questionService.getTags(question.getQuestionId());
+            List<String> tagNameList = new ArrayList<>();
+            for (String tag:tags){
+                tagNameList.add(tagService.getNameById(Integer.valueOf(tag)));
+            }
+            vo.set("tagNameList",tagNameList);
 
             vos.add(vo);
         }
+
+        //个人消息数据封装
+        model.addAttribute("isLogin",false);
+        if (hostHolder.getUsers()!= null){
+            User hostUser = hostHolder.getUsers();
+
+            HostUserDTO hostUserDTO = new HostUserDTO();
+            hostUserDTO.setUserName(hostUser.getName());
+            hostUserDTO.setIntroduction(userService.getIntroductionById(hostUser.getUserId()));
+            hostUserDTO.setFollowerCount(followService.getFollowerCount(EntityType.ENTITY_USER.getValue(),hostUser.getUserId()));
+            hostUserDTO.setCollectionCount(collectionService.getUserCollectionCount(hostUser.getUserId()));
+            hostUserDTO.setCommentCount(commentService.getUserAnswerCount(hostUser.getUserId()));
+            model.addAttribute("hostUser",hostUserDTO);
+            model.addAttribute("isLogin",true);
+        }
+
 
         model.addAttribute("vos",vos);
 

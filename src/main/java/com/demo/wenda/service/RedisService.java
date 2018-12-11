@@ -12,6 +12,7 @@ import redis.clients.jedis.Transaction;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RedisService {
@@ -53,6 +54,21 @@ public class RedisService {
     }
 
     /*
+    获取对象
+    */
+    public String get(String key) {
+        Jedis jedis = null;
+
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.get(key);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
     set 进redis
      */
     public <T> boolean set(KeyPrefix prefix, String key, T value) {
@@ -84,6 +100,17 @@ public class RedisService {
             returnToPool(jedis);
         }
         return false;
+    }
+
+    public String set(String key, String value){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.set(key,value);
+        } finally {
+            returnToPool(jedis);
+        }
     }
 
 
@@ -120,6 +147,20 @@ public class RedisService {
     }
 
     /*
+  自减1
+   */
+    public Long decr(String key) {// -1
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.decr(key);
+        } finally {
+            returnToPool(jedis);//释放
+        }
+    }
+
+    /*
     自增1
      */
     public Long incr(KeyPrefix prefix, String key) {// +1
@@ -135,6 +176,21 @@ public class RedisService {
             returnToPool(jedis);//释放
         }
     }
+
+    /*
+ 自增1
+  */
+    public Long incr(String key) {// +1
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.incr(key);
+        } finally {
+            returnToPool(jedis);//释放
+        }
+    }
+
 
     //  将资源还给连接池
     private void returnToPool(Jedis jedis) {
@@ -217,6 +273,34 @@ public class RedisService {
             jedis = jedisPool.getResource();
 
             return jedis.brpop(timeout,keys);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    将一个或多个成员元素加入到集合中，已经存在于集合的成员元素将被忽略
+     */
+    public Long sadd(String key, String... members){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.sadd(key,members);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    返回集合中的所有的成员。 不存在的集合 key 被视为空集合。
+     */
+    public Set<String> smembers(String key){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.smembers(key);
         }finally {
             returnToPool(jedis);
         }

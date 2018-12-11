@@ -16,8 +16,17 @@ public class RedisKeyUtil {
     //用户点赞的实体
     private static final String USER_LIKE="USER_LIKE";
 
-    //异步时间队列
+    //异步事件队列
     private static final String EVENT_QUEUE = "EVENT_QUEUE";
+
+    //问题标签
+    private static final String QUESTION_TAG = "QUESTION_TAG";
+
+    //标签下的问题
+    private static final String TAG_QUESTION = "TAG_QUESTION";
+
+    //某问题的浏览数
+    private static final String QUESTION_LOOK="QUESTION_LOOK";
 
 
 
@@ -96,7 +105,51 @@ public class RedisKeyUtil {
     public static String getUserLikeKey(int userId,int entityType){return USER_LIKE+SPILT+userId+SPILT+entityType;}
 
 
+    /**
+     * 异步事件队列
+     * 表示有多少异步消息队列待处理
+     * @return
+     */
     public static String getEventQueueKey(){
         return EVENT_QUEUE;
+    }
+
+    /**
+     * 某问题所包含的标签id
+     *
+     * example:"QUESTION_TAG:1" 这个key
+     * 包含questionId=1的问题下有多少个tagId
+     *
+     * @param questionId 问题id
+     * @return
+     */
+    public static String getQuestionTagKey(int questionId){
+        return QUESTION_TAG+SPILT+questionId;
+    }
+
+    /**
+     * 某标签下的问题
+     *
+     * example:"TAG_QUESTION:1" 这个key
+     * 包含tagId=1的问题下的questionId
+     *
+     * @param tagId 标签id
+     * @return
+     */
+    public static String getTagQuestionKey(int tagId){
+        return TAG_QUESTION+SPILT+tagId;
+    }
+
+    /**
+     * 某问题的浏览数
+     *
+     * example:"QUESTION_LOOK:1" 这个key
+     * 包含 questionId=1 的问题浏览数
+     *
+     * @param questionId
+     * @return
+     */
+    public static String getQuestionLook(int questionId){
+        return QUESTION_LOOK+SPILT+questionId;
     }
 }

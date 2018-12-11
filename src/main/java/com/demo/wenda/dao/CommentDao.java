@@ -2,6 +2,7 @@ package com.demo.wenda.dao;
 
 import com.demo.wenda.domain.Comment;
 import com.demo.wenda.domain.User;
+import com.demo.wenda.enums.EntityType;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -36,5 +37,8 @@ public interface CommentDao {
 
     @Select({"select entity_id from",TABLE_NAME,"where comment_id = #{commentId}"})
     Integer getEntityId(int commentId);
+
+    @Select({"select count(*) from",TABLE_NAME,"where user_id = #{userId} and entity_type=3"})
+    Long getUserAnswerCount(int userId);
 
 }

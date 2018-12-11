@@ -4,6 +4,7 @@ import com.demo.wenda.domain.Collections;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * create by: one
@@ -20,5 +21,8 @@ public interface CollectionDAO {
 
     @Delete({"delete  from ",TABLE_NAME," where entity_id = #{entityId} and entity_type = #{entityType} and uset_id = #{userId}"})
     Integer deleteComment(Collections collection);
+
+    @Select({"select COUNT(*) from",TABLE_NAME,"where user_id = #{userId}"})
+    Integer getUserCollectionCount(int userId);
 
 }

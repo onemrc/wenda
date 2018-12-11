@@ -3,11 +3,9 @@ package com.demo.wenda.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.demo.wenda.domain.*;
 import com.demo.wenda.enums.EntityType;
-import com.demo.wenda.service.CommentService;
-import com.demo.wenda.service.LikeService;
-import com.demo.wenda.service.QuestionService;
-import com.demo.wenda.service.TagService;
+import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
+import com.demo.wenda.utils.RedisKeyUtil;
 import com.demo.wenda.vo.ViewObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +36,16 @@ public class QuestionController {
 
     private final LikeService likeService;
 
+    private final RedisService redisService;
+
     @Autowired
-    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService) {
+    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService) {
         this.questionService = questionService;
         this.hostHolder = hostHolder;
         this.commentService = commentService;
         this.tagService = tagService;
         this.likeService = likeService;
+        this.redisService = redisService;
     }
 
     /**
@@ -86,17 +87,6 @@ public class QuestionController {
         Question question = new Question();
 
 
-        if (!StringUtils.isEmpty(tagName)){
-
-            if (tagService.getIdByName(tagName) == null){//没有这个标签
-                Tag tag = new Tag();
-                tag.setTag_name(tagName);
-                question.setTagId(tagService.addTag(tagName));
-            }else {
-                question.setTagId(tagService.getIdByName(tagName));
-            }
-        }
-
         question.setTitle(title);
         question.setContent(content);
 
@@ -104,10 +94,34 @@ public class QuestionController {
 
         question.setAnonymous(anonymous);
 
-        question.setLookCount(0);
+//        question.setLookCount(0);
         question.setCommentCount(0);
 
-        questionService.addQuestion(question);
+        //存进数据库，顺便拿到新的id
+        Integer newQuestionId =  questionService.addQuestion(question);
+
+        if (!StringUtils.isEmpty(tagName)){
+            String[] tags =  tagName.split(" ");
+            for (String tag:tags){
+                if (tagService.getIdByName(tag) == null){//没有这个标签
+                    //存进数据库
+                    Integer newTagId = tagService.addTag(tag);
+
+                    //存进redis
+                    questionService.addTag(newQuestionId,newTagId);
+
+                    tagService.addQuestion(newQuestionId,newTagId);
+                }else {
+                    Integer TagId = tagService.getIdByName(tag);
+                    //存进redis
+                    questionService.addTag(newQuestionId,TagId);
+
+                    tagService.addQuestion(newQuestionId,TagId);
+                }
+            }
+        }
+        //初始化浏览数
+        redisService.set(RedisKeyUtil.getQuestionLook(newQuestionId),0+"");
 
 
         return ConverterUtil.getJSONString(200,"发布成功");
@@ -123,7 +137,7 @@ public class QuestionController {
      */
     @RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
     public String questionDetail(Model model,
-                                 @PathVariable("questionId") int questionId) {
+                                 @PathVariable("questionId") Integer questionId) {
         List<ViewObject> vos = new ArrayList<>();
 
         Question question = questionService.getById(questionId);

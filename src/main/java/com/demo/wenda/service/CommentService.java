@@ -52,4 +52,9 @@ public class CommentService {
         return commentDao.getCommentById(commentId);
     }
 
+
+    public Long getUserAnswerCount(int userId){
+        return commentDao.getUserAnswerCount(userId);
+    }
+
 }

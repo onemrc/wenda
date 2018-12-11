@@ -9,10 +9,10 @@ import java.util.List;
 @Mapper
 public interface QuestionDao {
     String TABLE_NAME = "question";
-    String INSERT_FIELDS = "title,content,user_id,anonymous,create_time,tag_id,look_count,comment_count";
+    String INSERT_FIELDS = "title,content,user_id,anonymous,create_time,comment_count";
     String SELECT_FIELDS = "question_id,"+INSERT_FIELDS;
 
-    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{title},#{content},#{userId},#{anonymous},#{createTime},#{tagId},#{lookCount},#{commentCount})"})
+    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{title},#{content},#{userId},#{anonymous},#{createTime},#{commentCount})"})
     @Options(useGeneratedKeys=true, keyProperty="questionId", keyColumn="question_id")//插入成功后马上返回，其自增的id
     int addQuestion(Question question);
 

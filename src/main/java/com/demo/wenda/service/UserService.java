@@ -2,6 +2,7 @@ package com.demo.wenda.service;
 
 import com.demo.wenda.dao.UserDao;
 import com.demo.wenda.domain.User;
+import com.demo.wenda.enums.StatusCodeEnum;
 import com.demo.wenda.redis.UserKey;
 import com.demo.wenda.utils.MD5Util;
 import com.demo.wenda.utils.UUIUtil;
@@ -99,9 +100,11 @@ public class UserService {
         if (user != null) {
             if (ValidatorUtil.isEmail(str)) {
                 map.put("msg", "该邮箱已被注册");
+                map.put("code", StatusCodeEnum.EMAIL_EXIST.getCode()+"");
                 return map;
             } else if (ValidatorUtil.isMobile(str)) {
                 map.put("msg", "该手机号已被注册");
+                map.put("code", StatusCodeEnum.PHONE_EXIST.getCode()+"");
                 return map;
             }
         }

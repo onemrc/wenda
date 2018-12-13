@@ -1,7 +1,10 @@
 package com.demo.wenda.controller;
 
+import com.demo.wenda.enums.StatusCodeEnum;
 import com.demo.wenda.service.UserService;
+import com.demo.wenda.utils.ResultVoUtil;
 import com.demo.wenda.vo.LoginVO;
+import com.demo.wenda.vo.ResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
@@ -47,23 +51,27 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
-    public String reg(Model model,
+    public String reg(Model model, HttpServletRequest request,
                       @RequestParam("str") String str,
                       @RequestParam("password") String password) {
 
         try {
             Map<String, String> map = userService.register(str, password);
-            if (map.containsKey("msg")) {
+            if (map.size()>0) {
                 model.addAttribute("msg", map.get("msg"));
-                return "login";
+                model.addAttribute("url","to_login");
+                return "error";
             }
             //注册成功，跳到首页
             logger.info("用户注册成功:{}",str);
-            return "redirect:/";
+            model.addAttribute("msg","请尽快完善您的个人信息");
+            model.addAttribute("url","/");
+            return "success";
         } catch (Exception e) {
 //            e.printStackTrace();
             logger.error("注册异常:{}", e.getMessage());
-            return "login";
+            return "error";
+//            return "login";
         }
     }
 

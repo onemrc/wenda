@@ -1,0 +1,134 @@
+<html>
+
+<head>
+    <#include "common/head.html">
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/index"><img class="small" src="../../static/imags/login.png" alt="">梧院问答
+
+            </a>
+        </div>
+        <div class="nav-input layui-input-inline">
+            <input type="text" name="title" required="" lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+
+
+        </div>
+        <div class="input-button"><a href="" class="layui-btn">搜索</a></div>
+        <div class="nav-headerbox ">
+            <button class="layui-btn ff"><a href="">首页</a></button>
+            <button class="layui-btn ff"><a href="">关注</a></button>
+            <button class="layui-btn ff"><a href="">消息</a></button>
+        </div>
+    </div>
+
+    <div class="layui-row padding-top10">
+        <div class="layui-col-md8 layui-col-md-offset3">
+            <div class="layui-row">
+
+                <div class="content layui-col-md8 Card">
+
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this w50">登录</li>
+                            <li class="w40">注册</li>
+
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form auto" action="do_login">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">邮箱/手机号</label>
+                                        <div class="layui-input-block w250">
+                                            <input type="text" name="str" required lay-verify="username"
+                                                   placeholder="" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">密码</label>
+                                        <div class="layui-input-block w250">
+                                            <input type="password" name="password" required lay-verify="required"
+                                                   placeholder="" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit>登录</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+
+
+
+                            <div class="layui-tab-item">
+
+                                <form class="layui-form auto" action="reg" method="post" id="reg">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">邮箱/手机号</label>
+                                        <div class="layui-input-block w250">
+                                            <input type="text" name="str" required lay-verify="username"
+                                                   placeholder="" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">密码</label>
+                                        <div class="layui-input-block w250">
+                                            <input type="password" name="password" required lay-verify="required|pass"
+                                                   placeholder="" autocomplete="off" class="layui-input"  id="pass">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">重复密码</label>
+                                        <div class="layui-input-block w250">
+                                            <input type="password" required lay-verify="required|affirmPass"
+                                                   placeholder="" autocomplete="off" class="layui-input" >
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit>注册</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<#include "common/footer.html">
+
+
+</body>
+
+</html>

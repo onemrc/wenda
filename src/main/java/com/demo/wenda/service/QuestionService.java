@@ -90,4 +90,13 @@ public class QuestionService {
         String key = RedisKeyUtil.getQuestionTagKey(questionId);
         return redisService.smembers(key);
     }
+
+    /**
+     * 获取某用户的提问数
+     * @param userId userId
+     * @return
+     */
+    public Long getUserQuestinCount(Integer userId){
+        return questionDao.getUserQuestionCount(userId);
+    }
 }

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface UserDao {
     String TABLE_NAME = "user";
@@ -37,5 +39,10 @@ public interface UserDao {
     @Select({"select introduction from",TABLE_NAME,"where user_id = #{id}"})
     String getIntroductionById(Integer id);
 
+    @Select({"select user_id from",TABLE_NAME,"limit #{currIndex} , #{pageSize}"})
+    List<Integer> getUserIdBySize(Integer currIndex,Integer pageSize);
+
+    @Select({"select head_url from",TABLE_NAME,"where user_id = #{id}"})
+    String getHeadUrlById(int id);
 
 }

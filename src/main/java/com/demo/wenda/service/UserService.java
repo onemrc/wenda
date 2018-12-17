@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -147,5 +148,19 @@ public class UserService {
      */
     public boolean strIsExist(String str){
         return userDao.selectUserPhoneOrEmail(str) ==null;
+    }
+
+
+    public List<Integer> getUserIdBySize(Integer currIndex,Integer pageSize){
+        return userDao.getUserIdBySize(currIndex,pageSize);
+    }
+
+    /**
+     * 获取用户头像路径
+     * @param userId
+     * @return
+     */
+    public String getUserHeadUrl(int userId){
+        return userDao.getHeadUrlById(userId);
     }
 }

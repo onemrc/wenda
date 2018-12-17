@@ -99,6 +99,11 @@ public class ConverterUtil {
         return json.toJSONString();
     }
 
+    public static String getJSONString(String msg,Object object){
+        JSONObject json = new JSONObject();
+        json.put(msg,object);
+        return json.toJSONString();
+    }
 
     public static String getJSONList(List list){
         JSONObject json = new JSONObject();

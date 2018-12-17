@@ -18,8 +18,8 @@
                     <div class="layui-tab layui-tab-brief" lay-filter="demo">
                         <ul class="layui-tab-title">
                             <li class="layui-this" lay-id="11">热门问题</li>
-                            <li lay-id="22">我的关注</li>
-                            <li lay-id="33">最新问题</li>
+                            <li lay-id="22" id="myFollows">我的关注</li>
+                            <li lay-id="33" id="news">最新问题</li>
                             <li lay-id="44">等待回答</li>
                         </ul>
                         <div class="layui-tab-content">
@@ -43,84 +43,87 @@
                                         <div class="tags">
                                             <a href="" class="post-tag">${tagName}</a>
                                         </div>
-                                        </#list>
-                                        <div class="started"><span>${(vo.question.createTime)?string('yyyy.MM.dd')}</span></div>
+                                    </#list>
+                                    <div class="started"><span>${(vo.question.createTime)?string('yyyy.MM.dd')}</span>
                                     </div>
-                                    <hr>
                                 </div>
-                            </#list>
-
-
+                                <hr>
                             </div>
-                            <div class="layui-tab-item">
+                        </#list>
 
-                            </div>
-                            <div class="layui-tab-item">内容3</div>
-                            <div class="layui-tab-item">内容4</div>
-
-                        </div>
 
                     </div>
-
-
-
-
-                </div>
-                <!-- <div class="content">
-                <div class="Card">
-                    <h3><a href="">TITLE?</a></h3>
-                    <div class="person">
+                    <div class="layui-tab-item">
+                        <#include "common/noFollows.html">
                     </div>
-                    <div class="article"></div>
-                    <div class="ask-botton"></div>
+                    <div class="layui-tab-item">
+
+
+                    </div>
+                    <div class="layui-tab-item"></div>
+
                 </div>
-            </div> -->
+
+            </div>
+
+
+        </div>
+        <!-- <div class="content">
+        <div class="Card">
+            <h3><a href="">TITLE?</a></h3>
+            <div class="person">
+            </div>
+            <div class="article"></div>
+            <div class="ask-botton"></div>
+        </div>
+    </div> -->
         <#if isLogin>
-                <div class="people layui-col-md3 Card">
+        <div class="people layui-col-md3 Card">
 
-                    <div class="Card-header">
-                        <div class=" Card-headerText">关于我</div>
-                    </div>
-                    <div class="Card-section">
-                        <div class="user-avatar"><span class="UserLink"><a href=""><img width="60" height="60" src="https://pic4.zhimg.com/v2-cd1414a3b78aff3604711de698883e3b_im.jpg"
-                                                                                        alt=""></a></span></div>
-                        <div class="user-content">
-                            <div class="user-name"><span class="UserLink"><a href="">${hostUser.userName}</a></span></div>
-                        </div>
-                        <div class="user-headline">
-                            <div class="RichText ztext">${hostUser.introduction}</div>
-                        </div>
-                    </div>
-                    <div class="Card-section clear_bolder">
-                        <div class="counts">
-                            <a href="">
-                                <div class="NumberBoard-itemInner">
-                                    <div class=".NumberBoard-itemName">回答</div>
-                                    <strong class=".NumberBoard-itemValue">${hostUser.commentCount}</strong>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="NumberBoard-itemInner">
-                                    <div class=".NumberBoard-itemName">收藏</div>
-                                    <strong class=".NumberBoard-itemValue">${hostUser.collectionCount}</strong>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div class="NumberBoard-itemInner">
-                                    <div class=".NumberBoard-itemName">关注者</div>
-                                    <strong class=".NumberBoard-itemValue">${hostUser.followerCount}</strong>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="MemberButtonGroup">
-                        <button class="layui-btn layui-btn-normal" onclick="addQuestion()" id="add">我要提问</button>
-                        <button class="layui-btn layui-btn-normal">我要回答</button>
-                    </div>
+            <div class="Card-header">
+                <div class=" Card-headerText">关于我</div>
+            </div>
+            <div class="Card-section">
+                <div class="user-avatar"><span class="UserLink"><a href=""><img width="60" height="60"
+                                                                                src="https://pic4.zhimg.com/v2-cd1414a3b78aff3604711de698883e3b_im.jpg"
+                                                                                alt=""></a></span></div>
+                <div class="user-content">
+                    <div class="user-name"><span class="UserLink"><a href="">${hostUser.userName}</a></span></div>
                 </div>
+                <div class="user-headline">
+                    <div class="RichText ztext">${hostUser.introduction}</div>
+                </div>
+            </div>
+            <div class="Card-section clear_bolder">
+                <div class="counts">
+                    <a href="">
+                        <div class="NumberBoard-itemInner">
+                            <div class=".NumberBoard-itemName">回答</div>
+                            <strong class=".NumberBoard-itemValue">${hostUser.commentCount}</strong>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="NumberBoard-itemInner">
+                            <div class=".NumberBoard-itemName">收藏</div>
+                            <strong class=".NumberBoard-itemValue">${hostUser.collectionCount}</strong>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="NumberBoard-itemInner">
+                            <div class=".NumberBoard-itemName">关注者</div>
+                            <strong class=".NumberBoard-itemValue">${hostUser.followerCount}</strong>
+                        </div>
+                    </a>
+                </div>
+            </div>
 
-    <#else>
+            <div class="MemberButtonGroup">
+                <button class="layui-btn layui-btn-normal" onclick="addQuestion()" id="add">我要提问</button>
+                <button class="layui-btn layui-btn-normal">我要回答</button>
+            </div>
+        </div>
+
+        <#else>
         <div class="login layui-col-md3 Card">
 
             <div class="Card-header">
@@ -136,18 +139,19 @@
                 </div>
             </div>
         </div>
-    </#if>
+    </
+    #if>
 
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- 弹出层 -->
 <div class="addQuestion layui-form" id="addQuestion">
     <div class="layui-form-item">
         <label class="layui-form-label">输入标题</label>
-        <div class="layui-input-block w400"  >
+        <div class="layui-input-block w400">
             <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
                    class="layui-input">
         </div>

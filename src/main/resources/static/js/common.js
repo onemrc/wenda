@@ -8,6 +8,59 @@ layui.use('element', function(){
 });
 
 
+$('#myFollows').click(function () {
+    $.ajax({
+        type:"GET",
+        url:"recommendFollow",
+        dataType:"json",
+        success:function (data) {
+            console.info(data);
+            var recommendFollows = data.data;
+
+            var dataInit = function () {
+                for (var i in recommendFollows){
+                    console.info(recommendFollows[i].name);
+                    console.info(recommendFollows[i].introduction);
+
+                    var row = $("#recommendFollow").clone();
+                    row.find("#name").text(recommendFollows[i].name);
+                    row.find("#answerCount").text(recommendFollows[i].answerCount+" 回答");
+                    row.find("#introduction").text(recommendFollows[i].introduction);
+                    row.find("#likeCount").text(recommendFollows[i].likeCount+" 赞同");
+                    row.find("#followeeCount").text(recommendFollows[i].followeeCount+" 关注者");
+                    row.find("#questionCount").text(recommendFollows[i].questionCount+" 提问");
+                    row.attr("id","ready"+i);
+
+                    row.appendTo("#recommendList");
+                    $("#ready"+i).removeClass("hidden");
+                }
+
+            };
+
+            dataInit();
+        }
+    })
+});
+
+$('#news').click(function () {
+    $.ajax({
+        type:"GET",
+        url:"news",
+        dataType:"json",
+        success:function (data){
+            var datas = data.data;
+            var dataInit = function (){
+                for (var i in datas){
+                    var row = $("#questions").clone();
+                    row.find("#commentCount").text(datas[i].commentCount);
+                    row.find("#lookCount").text(datas[i].lookCount);
+                    row.find("#createTime").text(datas[i].createTime ?String('yyyy.MM.dd'));
+                }
+            }
+        }
+    });
+});
+
 
 
 var addQuestion = function(){

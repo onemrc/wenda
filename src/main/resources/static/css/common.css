@@ -127,7 +127,7 @@ img.small{
     margin-left: 20px;
     width: 296px;
     /* height: 366px; */
-    height: 100px;
+    height: 150px;
     padding-top: 10px;
 }
 
@@ -312,4 +312,52 @@ img.small{
 .auto{
     margin-top: 100px;
     margin-left: 25%;
+}
+
+
+.floatL{
+    float: left;
+}
+
+.floatR{
+    float: right;
+}
+
+
+.zm-item-img-avatar {
+    float: left;
+    height: 50px;
+    margin: 2px 10px 0 0;
+    width: 50px;
+    border: 0 none;
+    border-radius: 2px;
+}
+
+.zm-list-content-medium {
+    margin: 0 0 0 64px;
+}
+
+.zm-list-content-title {
+    margin: 0;
+}
+
+.zg-big-gray {
+    color: #999;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.zm-profile-section-item {
+    border-bottom: 1px dotted #EEE;
+    margin-bottom: 10px;
+}
+
+.nofollow{
+    height:50px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.hidden{
+    display: none;
 }

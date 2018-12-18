@@ -75,6 +75,7 @@ public class CommentController {
             comment.setEntityType(EntityType.ENTITY_QUESTION.getValue());
             comment.setEntityId(questionId);
             comment.setCommentStatus(CommentStatus.DELETED.getCode());
+            comment.setUserId(hostUser.getUserId());
 
             commentService.addComment(comment);
             logger.info("添加回答成功：questionId={}", questionId);
@@ -84,7 +85,7 @@ public class CommentController {
             return ConverterUtil.getJSONString(1, "添加回答失败");
         }
 
-        return "redirect:/question/" + questionId;
+        return "redirect:question/" + questionId;
     }
 
 

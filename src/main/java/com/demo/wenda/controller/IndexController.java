@@ -59,51 +59,67 @@ public class IndexController {
         this.collectionService = collectionService;
     }
 
+//    @GetMapping(value = {"/","/index"})
+//    public String index(Model model){
+//        List<Question> questionList = questionService.getLatestQuestions();
+//
+//        List<ViewObject> vos = new ArrayList<>();
+//
+//
+//        //问题数据封装
+//        for (Question question : questionList){
+//            ViewObject vo = new ViewObject();
+//            vo.set("question",question);
+//            vo.set("user",userService.getById(question.getUserId()));
+////            vo.set("tagName",tagService.getNameById(question.getTagId()));
+//
+//            vo.set("lookCount",questionService.getLookCount(question.getQuestionId()));
+//
+//            //获取tags
+//            Set<String> tags = questionService.getTags(question.getQuestionId());
+//            List<String> tagNameList = new ArrayList<>();
+//            for (String tag:tags){
+//                tagNameList.add(tagService.getNameById(Integer.valueOf(tag)));
+//            }
+//            vo.set("tagNameList",tagNameList);
+//
+//            vos.add(vo);
+//        }
+//
+//        //个人消息数据封装
+//        model.addAttribute("isLogin",false);
+//        if (hostHolder.getUsers()!= null){
+//            User hostUser = hostHolder.getUsers();
+//
+//            HostUserDTO hostUserDTO = new HostUserDTO();
+//            hostUserDTO.setUserName(hostUser.getName());
+//            hostUserDTO.setIntroduction(userService.getIntroductionById(hostUser.getUserId()));
+//            hostUserDTO.setFollowerCount(followService.getFollowerCount(EntityType.ENTITY_USER.getValue(),hostUser.getUserId()));
+//            hostUserDTO.setCollectionCount(collectionService.getUserCollectionCount(hostUser.getUserId()));
+//            hostUserDTO.setCommentCount(commentService.getUserAnswerCount(hostUser.getUserId()));
+//            model.addAttribute("hostUser",hostUserDTO);
+//            model.addAttribute("isLogin",true);
+//        }
+//
+//
+//        model.addAttribute("vos",vos);
+//
+//        return "index";
+//    }
+
     @GetMapping(value = {"/","/index"})
     public String index(Model model){
         List<Question> questionList = questionService.getLatestQuestions();
-
         List<ViewObject> vos = new ArrayList<>();
-
-
-        //问题数据封装
-        for (Question question : questionList){
+        for (Question question:questionList){
             ViewObject vo = new ViewObject();
-            vo.set("question",question);
-            vo.set("user",userService.getById(question.getUserId()));
-//            vo.set("tagName",tagService.getNameById(question.getTagId()));
-
-            vo.set("lookCount",questionService.getLookCount(question.getQuestionId()));
-
-            //获取tags
-            Set<String> tags = questionService.getTags(question.getQuestionId());
-            List<String> tagNameList = new ArrayList<>();
-            for (String tag:tags){
-                tagNameList.add(tagService.getNameById(Integer.valueOf(tag)));
-            }
-            vo.set("tagNameList",tagNameList);
-
+            vo.set("question", question);
+            vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION.getValue(), question.getQuestionId()));
+            vo.set("user", userService.getById(question.getUserId()));
             vos.add(vo);
         }
-
-        //个人消息数据封装
-        model.addAttribute("isLogin",false);
-        if (hostHolder.getUsers()!= null){
-            User hostUser = hostHolder.getUsers();
-
-            HostUserDTO hostUserDTO = new HostUserDTO();
-            hostUserDTO.setUserName(hostUser.getName());
-            hostUserDTO.setIntroduction(userService.getIntroductionById(hostUser.getUserId()));
-            hostUserDTO.setFollowerCount(followService.getFollowerCount(EntityType.ENTITY_USER.getValue(),hostUser.getUserId()));
-            hostUserDTO.setCollectionCount(collectionService.getUserCollectionCount(hostUser.getUserId()));
-            hostUserDTO.setCommentCount(commentService.getUserAnswerCount(hostUser.getUserId()));
-            model.addAttribute("hostUser",hostUserDTO);
-            model.addAttribute("isLogin",true);
-        }
-
-
-        model.addAttribute("vos",vos);
-
+        model.addAttribute("user",hostHolder.getUsers());
+        model.addAttribute("vos", vos);
         return "index";
     }
 

@@ -8,6 +8,7 @@ import redis.clients.jedis.Transaction;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class FollowService {
@@ -73,5 +74,13 @@ public class FollowService {
     public Long getFolloweeCount(int entityType, int entityId) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(entityType, entityId);
         return redisService.zcard(followeeKey);
+    }
+
+    /*
+    获取某实体 区间内 关注的人
+     */
+    public Set<String> getFollowUser(int entityType,int entityId,long start,long end){
+        String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
+        return redisService.zrange(followerKey,start,end);
     }
 }

@@ -9,7 +9,6 @@ import com.demo.wenda.utils.RedisKeyUtil;
 import com.demo.wenda.vo.ViewObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 问题
  */
 @Controller
-@RequestMapping(value = "/question")
 public class QuestionController {
     private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
@@ -38,14 +37,20 @@ public class QuestionController {
 
     private final RedisService redisService;
 
+    private final FollowService followService;
+
+    private final UserService userService;
+
     @Autowired
-    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService) {
+    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService) {
         this.questionService = questionService;
         this.hostHolder = hostHolder;
         this.commentService = commentService;
         this.tagService = tagService;
         this.likeService = likeService;
         this.redisService = redisService;
+        this.followService = followService;
+        this.userService = userService;
     }
 
     /**
@@ -54,7 +59,7 @@ public class QuestionController {
      * @param content
      * @return
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     public String add(@RequestParam("title") String title,
                       @RequestParam("content") String content) {
         try {
@@ -71,7 +76,7 @@ public class QuestionController {
         }
     }
 
-    @RequestMapping(value = {"/addQuestion"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/question/addQuestion"}, method = RequestMethod.POST)
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
                              @RequestParam("content") String content,
@@ -135,36 +140,76 @@ public class QuestionController {
      * @param questionId
      * @return
      */
-    @RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/question/{questionId}", method = RequestMethod.GET)
     public String questionDetail(Model model,
                                  @PathVariable("questionId") Integer questionId) {
-        List<ViewObject> vos = new ArrayList<>();
 
         Question question = questionService.getById(questionId);
 
         model.addAttribute("question",question);
 
-        if (question.getTagId()!= null){
-            String tagName = tagService.getNameById(question.getTagId());
-            model.addAttribute("tagName",tagName);
+//        if (question.getTagId()!= null){
+//            String tagName = tagService.getNameById(question.getTagId());
+//            model.addAttribute("tagName",tagName);
+//        }
+
+        model.addAttribute("followed",false);
+        if (hostHolder.getUsers() != null){
+            model.addAttribute("user",hostHolder.getUsers());
+            //当前用户是否已关注该问题
+            model.addAttribute("followed",followService.follow(hostHolder.getUsers().getUserId(),questionId,EntityType.ENTITY_QUESTION.getValue()));
         }
 
+        //这个问题的关注人人数
+        Long followUserCount = followService.getFolloweeCount(EntityType.ENTITY_QUESTION.getValue(),questionId);
+        model.addAttribute("followUserCount",followUserCount);
+
+        //这个问题关注的人,太多的话取10个算了
+        Set<String> users = followService.getFollowUser(EntityType.ENTITY_QUESTION.getValue(),questionId,0,10);
+        List<ViewObject> followUsers = new ArrayList<>();
+        for (String userId:users){
+            ViewObject follower = new ViewObject();
+            Integer id = Integer.valueOf(userId);
+            follower.set("id",id);
+            follower.set("name",userService.getUserNameById(id));
+            follower.set("headUrl",userService.getUserHeadUrl(id));
+            followUsers.add(follower);
+        }
+        model.addAttribute("followUsers",followUsers);
 
         //该问题下的回答
-        List<Comment> AnswerList = commentService.getCommentByEntity(questionId, EntityType.ENTITY_ANSWER.getValue());
+        List<Comment> AnswerList = commentService.getCommentByEntity(questionId, EntityType.ENTITY_QUESTION.getValue());
+        List<ViewObject> comments = new ArrayList<>();
         for (Comment answer:AnswerList){
-            ViewObject vo = new ViewObject();
-            vo.set("answer",answer);
+            ViewObject comment = new ViewObject();
+
+            //这个回答的用户名
+            comment.set("userName",userService.getUserNameById(answer.getUserId()));
+
+            comment.set("userHeadUrl",userService.getUserHeadUrl(answer.getUserId()));
+
+            //这个回答的内容
+            comment.set("content",commentService.getContentById(answer.getCommentId()));
 
             //这个回答下有多少评论
-            int commentCount= commentService.getCommentCount(answer.getEntityId(),EntityType.ENTITY_COMMENT.getValue());
-            vo.set("commentCount",commentCount);
+            int commentCount= commentService.getCommentCount(answer.getEntityId(),EntityType.ENTITY_ANSWER.getValue());
+            comment.set("commentCount",commentCount);
 
             //这个回答有多少个赞
-            vo.set("likeCount",likeService.getCommentLikeCount(EntityType.ENTITY_ANSWER.getValue(),answer.getCommentId()));
+            comment.set("likeCount",likeService.getCommentLikeCount(EntityType.ENTITY_ANSWER.getValue(),answer.getCommentId()));
 
-            vos.add(vo);
+            //当前用户是否给这个回答点过赞
+            comment.set("liked",false);
+//            //当前用户是否关注了这个回答
+//            comment.set("followed",false);
+            if (hostHolder.getUsers() != null){
+                comment.set("liked",likeService.cancelLikeToAswer(hostHolder.getUsers().getUserId(),EntityType.ENTITY_ANSWER.getValue(),answer.getCommentId()));
+                comment.set("followed",followService.follow(hostHolder.getUsers().getUserId(),answer.getCommentId(),EntityType.ENTITY_ANSWER.getValue()));
+            }
+
+            comments.add(comment);
         }
+        model.addAttribute("comments",comments);
 
         return "detail";
     }

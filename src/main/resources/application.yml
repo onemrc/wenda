@@ -2,8 +2,8 @@ server:
   port: 8080
 
 #  url的前缀
-  servlet:
-    context-path: /wenda
+#  servlet:
+#    context-path: /wenda
 #
 mybatis:
   configuration:
@@ -30,13 +30,9 @@ spring:
 
 
 #  freemarker config
-  freemarker:
-    cache: false
-    check-template-location: true
-    content-type: text/html
-    charset: UTF-8
-    suffix: .html
-#
+#  freemarker:
+#    suffix: .html
+  #
 ## redis
   redis:
     host: 47.106.215.221

@@ -104,6 +104,7 @@
 		<!--<dependency>-->
 			<!--<groupId>org.springframework.boot</groupId>-->
 			<!--<artifactId>spring-boot-starter-velocity</artifactId>-->
+			<!--<version>1.2.2.RELEASE</version>-->
 		<!--</dependency>-->
 
 		<!--MD5 Util-->

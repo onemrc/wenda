@@ -306,6 +306,20 @@ public class RedisService {
         }
     }
 
+    /*
+    返回有序集中，指定区间内的成员。
+     */
+    public Set<String> zrange(String key, long start, long end){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zrange(key,start,end);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
 //    /**
 //     * 移除有序集中的一个或多个成员，不存在的成员将被忽略
 //     * @param key key

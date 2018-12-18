@@ -57,4 +57,8 @@ public class CommentService {
         return commentDao.getUserAnswerCount(userId);
     }
 
+    public String getContentById(int commentId){
+        return commentDao.getContentById(commentId);
+    }
+
 }

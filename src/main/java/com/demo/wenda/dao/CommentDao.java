@@ -41,4 +41,7 @@ public interface CommentDao {
     @Select({"select count(*) from",TABLE_NAME,"where user_id = #{userId} and entity_type=3"})
     Long getUserAnswerCount(int userId);
 
+    @Select({"select content from",TABLE_NAME,"where comment_id = #{id}"})
+    String getContentById(int id);
+
 }

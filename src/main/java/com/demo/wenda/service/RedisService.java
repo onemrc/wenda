@@ -320,6 +320,20 @@ public class RedisService {
         }
     }
 
+    /*
+    判断成员元素是否是集合的成员
+     */
+    public Boolean sismember(String key, String member){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.sismember(key,member);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
 //    /**
 //     * 移除有序集中的一个或多个成员，不存在的成员将被忽略
 //     * @param key key

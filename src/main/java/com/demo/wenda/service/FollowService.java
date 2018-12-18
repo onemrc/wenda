@@ -83,4 +83,16 @@ public class FollowService {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return redisService.zrange(followerKey,start,end);
     }
+
+    /**
+     * 某用户是否关注了某实体
+     * @param entityType
+     * @param userId
+     * @return
+     */
+    public boolean isFollow(int entityType,int entityId,int userId){
+        String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
+
+        return redisService.sismember(followerKey,userId+"");
+    }
 }

@@ -17,12 +17,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
+import javax.websocket.server.PathParam;
 import java.util.*;
 
 /**
@@ -170,6 +168,36 @@ public class IndexController {
 //        String data = ConverterUtil.getJSONString(vos);
 
         return ResultVoUtil.success(vos);
+    }
+
+    @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String userIndex(Model model,
+                            @PathVariable("userId") Integer userId){
+
+        User user = userService.getById(userId);
+        ViewObject vo = new ViewObject();
+
+        //这个人的信息
+        vo.set("user",user);
+
+        //这个人有多少条回答
+        vo.set("commentCount",commentService.getUserAnswerCount(userId));
+
+        //被多少个人关注
+        vo.set("followerCount",followService.getFollowerCount(EntityType.ENTITY_USER.getValue(),userId));
+
+        //关注了多少个人
+        vo.set("followeeCount",followService.getFolloweeCount(EntityType.ENTITY_USER.getValue(),userId));
+
+        //当前用户有没有关注TA
+        if (hostHolder.getUsers() != null){
+            vo.set("followed",followService.isFollow(EntityType.ENTITY_USER.getValue(),userId,hostHolder.getUsers().getUserId()));
+        }else {
+            vo.set("followed",false);
+        }
+
+        model.addAttribute("profileUser",vo);
+        return "profile";
     }
 
 

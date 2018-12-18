@@ -37,7 +37,7 @@
                                             <div class="zm-item-vote">
                                                 <a class="zm-item-vote-count js-expand js-vote-count" href="javascript:;" data-bind-votecount="">${vo.followCount!}</a></div>
                                             <div class="zm-item-answer-author-info">
-                                                <a class="author-link" data-tip="p$b$amuro1230" target="_blank" href="user/$!{vo.user.userId}">${vo.user.name!}</a>
+                                                <a class="author-link" data-tip="p$b$amuro1230" target="_blank" href="/user/${vo.user.userId!}">${vo.user.name!}</a>
                                                 ，${(vo.question.createTime)?string('yyyy-MM-dd HH:mm:ss')}</div>
                                             <div class="zm-item-vote-info" data-votecount="4168" data-za-module="VoteInfo">
                                                 <span class="voters text">

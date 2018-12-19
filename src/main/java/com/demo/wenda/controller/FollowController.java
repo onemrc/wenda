@@ -7,20 +7,17 @@ import com.demo.wenda.dto.FollowerDTO;
 import com.demo.wenda.enums.EntityType;
 import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
+import com.demo.wenda.vo.ViewObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import javax.swing.text.View;
+import java.util.*;
 
 /**
  * 关注
@@ -128,4 +125,59 @@ public class FollowController {
     }
 
 
+    /**
+     * 某用户的粉丝
+     * @param model
+     * @param userId
+     * @return
+     */
+    @RequestMapping(path = {"/user/{userId}/followers"}, method = {RequestMethod.GET})
+    public String followers(Model model, @PathVariable("userId") int userId){
+        //先找10个
+        Set<String> followeeIds = followService.getFollowUser(EntityType.ENTITY_USER.getValue(),userId,0,10);
+
+        //转一下类型
+        List<Integer> IfolloweeIds = new ArrayList<>();
+        for (String fid:followeeIds){
+            IfolloweeIds.add(Integer.valueOf(fid));
+        }
+
+        if (hostHolder.getUsers() != null) {
+            model.addAttribute("followees", getUsersInfo(hostHolder.getUsers().getUserId(), IfolloweeIds));
+        } else {
+            model.addAttribute("followees", getUsersInfo(0, IfolloweeIds));
+        }
+        model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER.getValue()));
+        model.addAttribute("curUser", userService.getById(userId));
+        return "followees";
+    }
+
+    private List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
+        List<ViewObject> userInfos = new ArrayList<ViewObject>();
+        for (Integer uid : userIds) {
+            User user = userService.getById(uid);
+            if (user == null) {
+                continue;
+            }
+            ViewObject vo = new ViewObject();
+            vo.set("user", user);
+            //该用户回答问题数
+            vo.set("commentCount", commentService.getCommentCount(EntityType.ENTITY_QUESTION.getValue(),uid));
+
+            //该用户关注别人的人数
+            vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER.getValue(), uid));
+
+            //该用户被多少人关注
+            vo.set("followeeCount", followService.getFolloweeCount(uid, EntityType.ENTITY_USER.getValue()));
+
+            //当前用户是否关注了这个人
+            if (localUserId != 0) {
+                vo.set("followed", followService.isFollow(EntityType.ENTITY_USER.getValue(), uid, localUserId));
+            } else {
+                vo.set("followed", false);
+            }
+            userInfos.add(vo);
+        }
+        return userInfos;
+    }
 }

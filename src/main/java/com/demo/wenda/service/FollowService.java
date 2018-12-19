@@ -93,7 +93,7 @@ public class FollowService {
     public boolean isFollow(int entityType,int entityId,int userId){
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
 
-        return redisService.sismember(followerKey,userId+"");
+        return redisService.zrank(followerKey,userId+"") == null ;
     }
 
     /**

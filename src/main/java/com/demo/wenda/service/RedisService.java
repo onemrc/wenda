@@ -334,6 +334,23 @@ public class RedisService {
         }
     }
 
+    /**
+     * 返回有序集中指定成员的排名，不存在返回nio
+     * @param key
+     * @param member
+     * @return
+     */
+    public Long zrank(String key, String member){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zrank(key,member);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
 //    /**
 //     * 移除有序集中的一个或多个成员，不存在的成员将被忽略
 //     * @param key key

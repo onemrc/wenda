@@ -77,11 +77,19 @@ public class FollowService {
     }
 
     /*
-    获取某实体 区间内 关注的人
+    获取某实体 区间内 关注的实体id
      */
-    public Set<String> getFollowUser(int entityType,int entityId,long start,long end){
+    public Set<String> getFollowers(int entityType, int entityId, long start, long end){
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return redisService.zrange(followerKey,start,end);
+    }
+
+    /*
+    获取某实体 被谁关注了
+     */
+    public Set<String> getFollowees(int entityType, int entityId, long start, long end){
+        String followeeKey = RedisKeyUtil.getFolloweeKey(entityId, entityType);
+        return redisService.zrange(followeeKey,start,end);
     }
 
     /**

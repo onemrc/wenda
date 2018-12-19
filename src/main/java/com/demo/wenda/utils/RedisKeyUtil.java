@@ -51,11 +51,11 @@ public class RedisKeyUtil {
     /**
      * 一个用户，关注了某一类实体,如用户、问题等(由userId与entityType共同组成key)
      *
-     * example:"FOLLOWER:6:1" 这个key
+     * example:"FOLLOWEE:6:1" 这个key
      * (6：userId)
      * (1:User)
      *
-     * 这个有序集合中包含了userId=6 的用户 关注的其他用户的userId
+     * 这个有序集合中包含了userId=6 的用户 被关注的其他用户的userId
      *
      * @param userId
      * @param entityType

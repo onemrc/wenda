@@ -165,7 +165,7 @@ public class QuestionController {
         model.addAttribute("followUserCount",followUserCount);
 
         //这个问题关注的人,太多的话取10个算了
-        Set<String> users = followService.getFollowUser(EntityType.ENTITY_QUESTION.getValue(),questionId,0,10);
+        Set<String> users = followService.getFollowers(EntityType.ENTITY_QUESTION.getValue(),questionId,0,10);
         List<ViewObject> followUsers = new ArrayList<>();
         for (String userId:users){
             ViewObject follower = new ViewObject();

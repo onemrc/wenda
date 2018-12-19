@@ -1,7 +1,6 @@
 package com.demo.wenda.controller;
 
 import com.demo.wenda.domain.HostHolder;
-import com.demo.wenda.domain.Question;
 import com.demo.wenda.domain.User;
 import com.demo.wenda.dto.FollowerDTO;
 import com.demo.wenda.enums.EntityType;
@@ -16,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.View;
 import java.util.*;
 
 /**
@@ -134,8 +132,35 @@ public class FollowController {
     @RequestMapping(path = {"/user/{userId}/followers"}, method = {RequestMethod.GET})
     public String followers(Model model, @PathVariable("userId") int userId){
         //先找10个
-        Set<String> followeeIds = followService.getFollowUser(EntityType.ENTITY_USER.getValue(),userId,0,10);
+        Set<String> followeeIds = followService.getFollowers(EntityType.ENTITY_USER.getValue(),userId,0,10);
 
+        //转一下类型
+        List<Integer> IfollowerIds = new ArrayList<>();
+        for (String fid:followeeIds){
+            IfollowerIds.add(Integer.valueOf(fid));
+        }
+
+        if (hostHolder.getUsers() != null) {
+            model.addAttribute("followees", getUsersInfo(hostHolder.getUsers().getUserId(), IfollowerIds));
+        } else {
+            model.addAttribute("followees", getUsersInfo(0, IfollowerIds));
+        }
+        model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER.getValue()));
+        model.addAttribute("curUser", userService.getById(userId));
+        return "followers";
+    }
+
+    /**
+     * 某用户关注了谁
+     * @param model
+     * @param userId
+     * @return
+     */
+    @RequestMapping(path = {"/user/{userId}/followees"}, method = {RequestMethod.GET})
+    public String followees(Model model, @PathVariable("userId") int userId){
+
+        //先找10个
+        Set<String> followeeIds = followService.getFollowees(EntityType.ENTITY_USER.getValue(),userId,0,10);
         //转一下类型
         List<Integer> IfolloweeIds = new ArrayList<>();
         for (String fid:followeeIds){
@@ -147,10 +172,11 @@ public class FollowController {
         } else {
             model.addAttribute("followees", getUsersInfo(0, IfolloweeIds));
         }
-        model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER.getValue()));
+        model.addAttribute("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER.getValue(),userId ));
         model.addAttribute("curUser", userService.getById(userId));
-        return "followers";
+        return "followees";
     }
+
 
     private List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
         List<ViewObject> userInfos = new ArrayList<ViewObject>();

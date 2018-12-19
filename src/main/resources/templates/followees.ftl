@@ -6,12 +6,13 @@
             <div class="zm-profile-section-wrap zm-profile-followee-page">
                 <div class="zm-profile-section-head">
                     <span class="zm-profile-section-name">
-                        <a href="#">${curUser.name}</a> 关注了 ${followeeCount} 人
+                        <a href="#">${curUser.name}</a> 关注了 ${followeeCount!"0"} 人
                     </span>
                 </div>
                 <div class="zm-profile-section-list">
                     <div id="zh-profile-follows-list">
                         <div class="zh-general-list clearfix">
+                            <#if followees??>
                             <#list followees as vo>
                             <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
                                 <#if vo.followed>
@@ -43,6 +44,7 @@
                                 </div>
                             </div>
                             </#list>
+                            </#if>
                         </div>
                         <a aria-role="button" class="zg-btn-white zu-button-more">更多</a>
                     </div>

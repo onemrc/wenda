@@ -149,7 +149,7 @@ public class FollowController {
         }
         model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER.getValue()));
         model.addAttribute("curUser", userService.getById(userId));
-        return "followees";
+        return "followers";
     }
 
     private List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {

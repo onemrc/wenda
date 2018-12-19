@@ -21,7 +21,7 @@
                             <meta itemprop="ZReactor" data-id="389034" data-meta="{&quot;source_type&quot;: &quot;promotion_answer&quot;, &quot;voteups&quot;: 4168, &quot;comments&quot;: 69, &quot;source&quot;: []}">
                             <div class="feed-item-inner">
                                 <div class="avatar">
-                                    <a title="${vo.user.name!}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/amuro1230">
+                                    <a title="${vo.user.name!}" data-tip="p$t$amuro1230" class="zm-item-link-avatar" target="_blank" href="/user/${vo.user.userId!}">
                                         <img src="${vo.user.headUrl!}" class="zm-item-img-avatar"></a>
                                 </div>
                                 <div class="feed-main">
@@ -44,7 +44,7 @@
                                                     <a href="#" class="more text">
                                                         <span class="js-voteCount">4168</span>&nbsp;人赞同</a></span>
                                             </div>
-                                            <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="123114" data-action="/answer/content" data-author-name="李淼" data-entry-url="/question/19857995/answer/13174385">
+                                            <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="123114" data-action="/answer/content" data-author-name="${vo.user.name!}" data-entry-url="/question/19857995/answer/13174385">
                                                 <div class="zh-summary summary clearfix">${vo.question.content!}</div>
                                             </div>
                                         </div>

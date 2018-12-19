@@ -95,4 +95,32 @@ public class FollowService {
 
         return redisService.sismember(followerKey,userId+"");
     }
+
+    /**
+     * 某用户取消对某实体的关注
+     * @param entityType
+     * @param entityId
+     * @param userId
+     * @return
+     */
+    public boolean unFollow(int entityType,int entityId,int userId){
+        //关注者的key
+        String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
+
+        //被关注的对象 key
+        String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
+
+
+        Jedis jedis = redisService.getNewJedis();
+        //开启事务
+        Transaction transaction = redisService.multi(jedis);
+
+        transaction.zrem(followerKey,userId+"");
+
+        transaction.zrem(followeeKey,entityId+"");
+
+        List<Object> res = redisService.exec(transaction, jedis);
+
+        return res.size() == 2 && (Long) res.get(0)> 0 && (Long) res.get(1) > 0;
+    }
 }

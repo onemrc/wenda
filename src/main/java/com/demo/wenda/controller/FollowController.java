@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,4 +107,25 @@ public class FollowController {
 
        return ConverterUtil.getJSONString(followerDTOList);
     }
+
+    /**
+     * 当前用户取消对某问题的关注
+     * @param questionId
+     * @return
+     */
+    @PostMapping(value = {"/unfollowQuestion"})
+    @ResponseBody
+    public String unFollowQuestion(@RequestParam("questionId") int questionId,
+                         HttpServletRequest request) {
+        if (hostHolder.getUsers() == null){
+            return ConverterUtil.getJSONString(999);
+        }
+
+        boolean res =  followService.unFollow(EntityType.ENTITY_QUESTION.getValue(),questionId,hostHolder.getUsers().getUserId());
+
+
+        return ConverterUtil.getJSONString(res?0:1);
+    }
+
+
 }

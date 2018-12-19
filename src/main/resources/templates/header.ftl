@@ -3,7 +3,7 @@
 <html lang="zh-CN" dropeffect="none" class="js is-AppPromotionBarVisible cssanimations csstransforms csstransitions flexbox no-touchevents no-mobile" style="">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>首页 - 问答</title>
+    <title>问答</title>
     <link rel="search" type="application/opensearchdescription+xml" href="https://nowcoder.com/static/search.xml" title="牛客">
     <link rel="stylesheet" type="text/css" href="../styles/bootstrap.min.css">
     <style>

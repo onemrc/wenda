@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum StatusCodeEnum {
     OK(200,"成功"),
-    ERROR(900,"服务器异常"),
+    SUCCESS(0,"请求成功"),
+    error(900,"服务器异常"),
+    NOT_LOGIN(999,"未登录"),
 
     COLLECTION_FAIL(111,"收藏失败"),
     EMAIL_EXIST(301,"该邮箱已被注册"),

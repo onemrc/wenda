@@ -6,7 +6,7 @@
             <div class="zm-profile-section-wrap zm-profile-followee-page">
                 <div class="zm-profile-section-head">
                     <span class="zm-profile-section-name">
-                        <a href="#">${curUser.name}</a> 关注了 ${followeeCount!"0"} 人
+                        <a href="/user/curUser.userId">${curUser.name}</a> 关注了 ${followeeCount!"0"} 人
                     </span>
                 </div>
                 <div class="zm-profile-section-list">

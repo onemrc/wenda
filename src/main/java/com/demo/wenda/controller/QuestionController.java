@@ -60,12 +60,20 @@ public class QuestionController {
      * @return
      */
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
+    @ResponseBody
     public String add(@RequestParam("title") String title,
                       @RequestParam("content") String content) {
         try {
+            if (hostHolder.getUsers() == null){
+                return ConverterUtil.getJSONString(999);
+            }
+
             Question question = new Question();
             question.setTitle(title);
             question.setContent(content);
+
+            question.setUserId(hostHolder.getUsers().getUserId());
+            question.setCommentCount(0);
 
             questionService.addQuestion(question);
 

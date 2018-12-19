@@ -48,6 +48,8 @@ public class QuestionService {
         Date date = new Date();
         question.setCreateTime(date);
 
+        question.setAnonymous(1);
+
         return questionDao.addQuestion(question) > 0 ? question.getQuestionId() : 0;
     }
 

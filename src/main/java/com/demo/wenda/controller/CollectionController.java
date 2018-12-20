@@ -52,7 +52,7 @@ public class CollectionController {
             return ConverterUtil.getJSONString(999);
         }
 
-        boolean res = collectionService.add(hostUser.getUserId(),questionId, EntityType.ENTITY_QUESTION.getValue());
+        boolean res = collectionService.add(hostUser.getUserId(),questionId, EntityType.QUESTION.getValue());
 
         return ConverterUtil.getJSONString(res ? StatusCodeEnum.OK : StatusCodeEnum.COLLECTION_FAIL);
     }
@@ -72,7 +72,7 @@ public class CollectionController {
             return ConverterUtil.getJSONString(999);
         }
 
-        boolean res = collectionService.remove(hostUser.getUserId(),questionId, EntityType.ENTITY_QUESTION.getValue());
+        boolean res = collectionService.remove(hostUser.getUserId(),questionId, EntityType.QUESTION.getValue());
 
         return ConverterUtil.getJSONString(res ? StatusCodeEnum.OK : StatusCodeEnum.COLLECTION_FAIL);
     }

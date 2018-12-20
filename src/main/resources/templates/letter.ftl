@@ -3,7 +3,8 @@
     <div id="main">
         <div class="zg-wrap zu-main clearfix ">
             <ul class="letter-list">
-                <#if conversations??>
+
+                <#if size gt 0>
                 <#list conversations as conversation>
                 <li id="conversation-item-10005_622873">
                     <a class="letter-link" href="/msg/detail?conversationId=${conversation.message.conversationId}"></a>
@@ -23,7 +24,7 @@
                             ${conversation.unReadCount}
                         </span>
                         <a class="list-head">
-                            <img alt="头像" src="${conversation.user.headUrl}">
+                            <img alt="头像" src="${conversation.user.headUrl!}">
                         </a>
                     </div>
                     <div class="letter-detail">
@@ -36,8 +37,9 @@
                     </div>
                 </li>
                 </#list>
-                <#else>
-                <li>暂时没有任何私信~</li>
+                <#else >
+                    <li>没有私信~</li>
+                <#--</#if>-->
                 </#if>
                 </ul>
 

@@ -1,9 +1,12 @@
 package com.demo.wenda.controller;
 
+import com.demo.wenda.async.EventModel;
+import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.domain.HostHolder;
 import com.demo.wenda.domain.User;
 import com.demo.wenda.dto.FollowerDTO;
 import com.demo.wenda.enums.EntityType;
+import com.demo.wenda.enums.EventType;
 import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
 import com.demo.wenda.vo.ViewObject;
@@ -43,6 +46,9 @@ public class FollowController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     /**
      * 当前用户关注另一个用户
      * @param userId 被关注者的id
@@ -61,6 +67,50 @@ public class FollowController {
 
         //当前用户关注一个人
         boolean res = followService.follow(hostUser.getUserId(), userId, EntityType.ENTITY_USER.getValue());
+
+        //发私信给那个人
+        eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
+        .setActorId(hostUser.getUserId())
+        .setEntityId(userId)
+        .setEntityType(EntityType.ENTITY_USER.getValue())
+        .setEntityOwnerId(userId));
+
+
+        Map<String, Object> message = new HashMap<>();
+
+        //粉丝数
+        message.put("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER.getValue(), userId));
+
+        //关注数
+        message.put("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER.getValue(), userId));
+
+        return ConverterUtil.getJSONString(res ? 0 : 1, message);
+    }
+
+    /**
+     * 当前用户取消关注另一个用户
+     * @param userId
+     * @return
+     */
+    @PostMapping(value = {"/unfollowUser"})
+    @ResponseBody
+    public String unfollow(@RequestParam("userId") int userId) {
+        //当前用户
+        User hostUser = hostHolder.getUsers();
+
+        if (hostUser == null) {
+            return ConverterUtil.getJSONString(999);
+        }
+
+        //当前用户关注一个人
+        boolean res = followService.unFollow(hostUser.getUserId(), userId, EntityType.ENTITY_USER.getValue());
+
+        //发私信给那个人
+        eventProducer.fireEvent(new EventModel(EventType.UNFOLLOW)
+                .setActorId(hostUser.getUserId())
+                .setEntityId(userId)
+                .setEntityType(EntityType.ENTITY_USER.getValue())
+                .setEntityOwnerId(userId));
 
 
         Map<String, Object> message = new HashMap<>();
@@ -103,6 +153,31 @@ public class FollowController {
        return ConverterUtil.getJSONString(followerDTOList);
     }
 
+    @RequestMapping(path = {"/followQuestion"}, method = {RequestMethod.POST})
+    @ResponseBody
+    public String followQuestion(@RequestParam("questionId") int questionId){
+        if (hostHolder.getUsers() == null) {
+            return ConverterUtil.getJSONString(999);
+        }
+
+        boolean ret = followService.follow(hostHolder.getUsers().getUserId(), EntityType.QUESTION.getValue(), questionId);
+
+        //发消息给这个人
+        eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
+        .setActorId(hostHolder.getUsers().getUserId())
+        .setEntityId(questionId)
+        .setEntityType(EntityType.QUESTION.getValue())
+        .setEntityOwnerId(questionService.getById(questionId).getUserId()));
+
+        Map<String,Object> info = new HashMap<>();
+        info.put("headUrl",hostHolder.getUsers().getHeadUrl());
+        info.put("name",hostHolder.getUsers().getName());
+        info.put("id",hostHolder.getUsers().getUserId());
+        info.put("count",followService.getFollowerCount(EntityType.QUESTION.getValue(),questionId));
+        return ConverterUtil.getJSONString(ret?1:0,info);
+
+    }
+
     /**
      * 当前用户取消对某问题的关注
      * @param questionId
@@ -116,7 +191,7 @@ public class FollowController {
             return ConverterUtil.getJSONString(999);
         }
 
-        boolean res =  followService.unFollow(EntityType.ENTITY_QUESTION.getValue(),questionId,hostHolder.getUsers().getUserId());
+        boolean res =  followService.unFollow(EntityType.QUESTION.getValue(),questionId,hostHolder.getUsers().getUserId());
 
 
         return ConverterUtil.getJSONString(res?0:1);
@@ -191,7 +266,7 @@ public class FollowController {
             ViewObject vo = new ViewObject();
             vo.set("user", user);
             //该用户回答问题数
-            vo.set("commentCount", commentService.getCommentCount(EntityType.ENTITY_QUESTION.getValue(),uid));
+            vo.set("commentCount", commentService.getCommentCount(EntityType.QUESTION.getValue(),uid));
 
             //该用户关注别人的人数
             vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER.getValue(), uid));

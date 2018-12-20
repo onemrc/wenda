@@ -164,4 +164,22 @@ public class UserService {
     public String getUserHeadUrl(int userId){
         return userDao.getHeadUrlById(userId);
     }
+
+
+    /**
+     * 用户登出
+     * @param response
+     * @return
+     */
+    public Boolean loginOut(HttpServletResponse response){
+        try{
+            Cookie cookie = new Cookie("token",null);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

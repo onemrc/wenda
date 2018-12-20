@@ -22,6 +22,9 @@ public class EventProducer {
         this.redisService = redisService;
     }
 
+    /*
+   发送一个事件到redis队列中
+     */
     public void fireEvent(EventModel eventModel){
 //        String json = ConverterUtil.getJSONString(eventModel);
         String json = JSON.toJSONString(eventModel);

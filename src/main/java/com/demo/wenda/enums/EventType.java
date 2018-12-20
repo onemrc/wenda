@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 public enum EventType {
     LIKE(0),
+    FOLLOW(1),
+    UNFOLLOW(2),
 
     ;
 

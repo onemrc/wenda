@@ -37,11 +37,11 @@ public class LikeHandler implements EventHandler {
     @Override
     public void doEventHandle(EventModel eventModel) {
         Message message = new Message();
-        message.setFromId(WendaUtil.SYSTEM_USERID);
+        message.setFromId(eventModel.getActorId());
         message.setToId(eventModel.getEntityOwnerId());
         message.setCreateDate(new Date());
         String actorUserName = userService.getUserNameById(eventModel.getActorId());
-        message.setContent("用户:"+actorUserName+" 赞了你的评论，<a href='/question/"+eventModel.getExt("questionId")+"'>http://127.0.0.1:8080/wenda/question/"+eventModel.getExt("questionId") + "</a>");
+        message.setContent("用户: "+actorUserName+" 赞了你的评论，<a href='/question/"+eventModel.getExt("questionId")+"'>http://127.0.0.1:8080/question/"+eventModel.getExt("questionId") + "</a>");
 
         message.setHasRead(ReadStatus.NOT_READ.getCode());
         message.setConversationId();

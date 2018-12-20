@@ -45,10 +45,13 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
 
     @Override
     public void afterPropertiesSet() throws Exception {
+
+        //找出所有实现了 EventHandler 接口的类
         Map<String,EventHandler> beans = applicationContext.getBeansOfType(EventHandler.class);
 
         if (beans != null){
             for (Map.Entry<String,EventHandler> entry : beans.entrySet()){
+                //找出这个Handler关注的 Event
                 List<EventType> eventTypes = entry.getValue().getSupportEventTypes();
 
                 for (EventType type : eventTypes){
@@ -63,22 +66,29 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                String key  = RedisKeyUtil.getEventQueueKey();
-                List<String> event = redisService.brpop(0,key);
+                while (true){
+                    String key  = RedisKeyUtil.getEventQueueKey();
 
-                for (String message : event){
-                    if (message.equals(key)){
-                        continue;
-                    }
+                    //将队列中的event取出
+                    List<String> event = redisService.brpop(0,key);
 
-                    EventModel eventModel = ConverterUtil.stringToBean(message,EventModel.class);
-                    if (!config.containsKey(eventModel.getEventType())){
-                        logger.error("不能识别的事件");
-                        continue;
-                    }
+                    for (String message : event){
+                        if (message.equals(key)){
+                            continue;
+                        }
 
-                    for (EventHandler handler : config.get(eventModel.getEventType())){
-                        handler.doEventHandle(eventModel);
+                        //将eventModel 从JSON 中解析出来
+                        EventModel eventModel = ConverterUtil.stringToBean(message,EventModel.class);
+
+                        if (!config.containsKey(eventModel.getEventType())){
+                            logger.error("不能识别的事件");
+                            continue;
+                        }
+
+                        //处理这些event
+                        for (EventHandler handler : config.get(eventModel.getEventType())){
+                            handler.doEventHandle(eventModel);
+                        }
                     }
                 }
             }

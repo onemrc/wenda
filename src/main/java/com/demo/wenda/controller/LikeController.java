@@ -1,6 +1,5 @@
 package com.demo.wenda.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.demo.wenda.async.EventModel;
 import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.domain.Comment;
@@ -11,7 +10,6 @@ import com.demo.wenda.enums.EventType;
 import com.demo.wenda.service.CommentService;
 import com.demo.wenda.service.LikeService;
 import com.demo.wenda.utils.ConverterUtil;
-import com.demo.wenda.utils.RedisKeyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.websocket.server.PathParam;
-import java.util.Map;
 
 /**
  * create by: one

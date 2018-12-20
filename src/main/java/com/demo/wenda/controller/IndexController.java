@@ -3,7 +3,6 @@ package com.demo.wenda.controller;
 import com.demo.wenda.domain.HostHolder;
 import com.demo.wenda.domain.Question;
 import com.demo.wenda.domain.User;
-import com.demo.wenda.dto.HostUserDTO;
 import com.demo.wenda.dto.QuestionDTO;
 import com.demo.wenda.enums.EntityType;
 import com.demo.wenda.service.*;
@@ -20,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.websocket.server.PathParam;
 import java.util.*;
 
 /**
@@ -112,7 +110,7 @@ public class IndexController {
         for (Question question:questionList){
             ViewObject vo = new ViewObject();
             vo.set("question", question);
-            vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION.getValue(), question.getQuestionId()));
+            vo.set("followCount", followService.getFollowerCount(EntityType.QUESTION.getValue(), question.getQuestionId()));
             vo.set("user", userService.getById(question.getUserId()));
             vos.add(vo);
         }
@@ -159,7 +157,7 @@ public class IndexController {
             QuestionDTO vo = new QuestionDTO();
             BeanUtils.copyProperties(question,vo);
             vo.setUserName(userService.getUserNameById(question.getUserId()));
-            vo.setAnswerCount(commentService.getCommentCount(question.getQuestionId(), EntityType.ENTITY_QUESTION.getValue()));
+            vo.setAnswerCount(commentService.getCommentCount(question.getQuestionId(), EntityType.QUESTION.getValue()));
             vo.setCreateTime(ConverterUtil.dateToString(question.getCreateTime()));
 
             vos.add(vo);

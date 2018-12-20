@@ -7,5 +7,6 @@ package com.demo.wenda.utils;
  */
 public class WendaUtil {
 
-    public static int SYSTEM_USERID = 1;
+    //系统id
+    public static int SYSTEM_USERID = 0;
 }

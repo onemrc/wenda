@@ -117,6 +117,7 @@ public class MessageController {
             conversations.add(vo);
         }
         model.addAttribute("conversations", conversations);
+        model.addAttribute("size",conversations.size());
         return "letter";
     }
 
@@ -131,8 +132,8 @@ public class MessageController {
 
         List<ViewObject> messages = new ArrayList<>();
 
-        //先拿10条
-        List<Message> messageList = messageService.getConversationList(hostHolder.getUsers().getUserId(), 0, 10);
+        //先拿100条
+        List<Message> messageList = messageService.getConversationList(hostHolder.getUsers().getUserId(), 0, 100);
 
         for (Message message : messageList) {
             ViewObject vo = new ViewObject();

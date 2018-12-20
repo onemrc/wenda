@@ -165,15 +165,15 @@ public class QuestionController {
         if (hostHolder.getUsers() != null){
             model.addAttribute("localUser",hostHolder.getUsers());
             //当前用户是否已关注该问题
-            model.addAttribute("followed",followService.follow(hostHolder.getUsers().getUserId(),questionId,EntityType.ENTITY_QUESTION.getValue()));
+            model.addAttribute("followed",followService.follow(hostHolder.getUsers().getUserId(),questionId,EntityType.QUESTION.getValue()));
         }
 
         //这个问题的关注人人数
-        Long followUserCount = followService.getFolloweeCount(EntityType.ENTITY_QUESTION.getValue(),questionId);
+        Long followUserCount = followService.getFolloweeCount(EntityType.QUESTION.getValue(),questionId);
         model.addAttribute("followUserCount",followUserCount);
 
         //这个问题关注的人,太多的话取10个算了
-        Set<String> users = followService.getFollowers(EntityType.ENTITY_QUESTION.getValue(),questionId,0,10);
+        Set<String> users = followService.getFollowers(EntityType.QUESTION.getValue(),questionId,0,10);
         List<ViewObject> followUsers = new ArrayList<>();
         for (String userId:users){
             ViewObject follower = new ViewObject();
@@ -186,7 +186,7 @@ public class QuestionController {
         model.addAttribute("followUsers",followUsers);
 
         //该问题下的回答
-        List<Comment> AnswerList = commentService.getCommentByEntity(questionId, EntityType.ENTITY_QUESTION.getValue());
+        List<Comment> AnswerList = commentService.getCommentByEntity(questionId, EntityType.QUESTION.getValue());
         List<ViewObject> comments = new ArrayList<>();
         for (Comment answer:AnswerList){
             ViewObject comment = new ViewObject();

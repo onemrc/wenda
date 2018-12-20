@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * create by: one
  * create time:2018/12/2 21:36
- * 描述：TODO
+ * 描述：EventModel
  */
 @Getter
 public class EventModel {
@@ -24,8 +24,10 @@ public class EventModel {
     //事件实体id
     private int entityId;
 
+    //事件实体的用户id
     private int entityOwnerId;
 
+    //其他需要传的变量
     private Map<String,String> exts = new HashMap<String,String>();
 
     public EventModel() {

@@ -41,7 +41,7 @@ public class LikeHandler implements EventHandler {
         message.setToId(eventModel.getEntityOwnerId());
         message.setCreateDate(new Date());
         String actorUserName = userService.getUserNameById(eventModel.getActorId());
-        message.setContent("用户:"+actorUserName+" 赞了你的评论，http://127.0.0.1:8080/wenda/question/"+eventModel.getExt("questionId"));
+        message.setContent("用户:"+actorUserName+" 赞了你的评论，<a href='/question/"+eventModel.getExt("questionId")+"'>http://127.0.0.1:8080/wenda/question/"+eventModel.getExt("questionId") + "</a>");
 
         message.setHasRead(ReadStatus.NOT_READ.getCode());
         message.setConversationId();

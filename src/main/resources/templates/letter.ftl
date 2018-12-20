@@ -6,7 +6,7 @@
                 <#if conversations??>
                 <#list conversations as conversation>
                 <li id="conversation-item-10005_622873">
-                    <a class="letter-link" href="/msg/detail?conversationId=$conversation.message.conversationId"></a>
+                    <a class="letter-link" href="/msg/detail?conversationId=${conversation.message.conversationId}"></a>
                     <div class="letter-info">
                         <span class="l-time">${(conversation.message.createDate)?string('yyyy-MM-dd HH:mm:ss')}</span>
                         <div class="l-operate-bar">

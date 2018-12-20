@@ -39,4 +39,8 @@ public class MessageService {
     public int getConversationCount(String conversationId){
         return messageDAO.getConversationCount(conversationId);
     }
+
+    public Long readStatusChange(int messageId){
+        return messageDAO.readStatusChange(messageId);
+    }
 }

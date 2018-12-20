@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,24 +45,25 @@ public class MessageController {
 
     /**
      * 发私信
-     * @param toName 接收者昵称
+     *
+     * @param toName  接收者昵称
      * @param content 内容
      * @return
      */
-    @PostMapping(value = {"/add"})
+    @PostMapping(value = {"msg/add"})
     @ResponseBody
     public String add(@RequestParam("toName") String toName,
-                      @RequestParam("content") String content){
+                      @RequestParam("content") String content) {
 
-        try{
+        try {
             //私信接受方，信息
             User user = userService.getUserByName(toName);
 
             //本地用户
             User localUser = hostHolder.getUsers();
 
-            if (user == null){
-                return ConverterUtil.getJSONString(1,"没有这个用户");
+            if (user == null) {
+                return ConverterUtil.getJSONString(1, "没有这个用户");
             }
 
             Message message = new Message();
@@ -82,39 +84,66 @@ public class MessageController {
 
             messageService.addMessage(message);
 
-            return ConverterUtil.getJSONString(200,"发送成功");
-        }catch (Exception e){
-            logger.error("私信发送异常：{}",e.getMessage());
-            return ConverterUtil.getJSONString(201,"私信发送失败");
+            return ConverterUtil.getJSONString(200, "发送成功");
+        } catch (Exception e) {
+            logger.error("私信发送异常：{}", e.getMessage());
+            return ConverterUtil.getJSONString(201, "私信发送失败");
         }
     }
 
     @GetMapping(value = {"/msg/list"})
-    public String list(Model model){
-        if (hostHolder.getUsers() == null){
+    public String list(Model model) {
+        if (hostHolder.getUsers() == null) {
             ConverterUtil.getJSONString(999);
-        }else {
-            model.addAttribute("localUser",hostHolder.getUsers());
+        } else {
+            model.addAttribute("localUser", hostHolder.getUsers());
         }
 
-        List<Message> conversationList = messageService.getConversationList(hostHolder.getUsers().getUserId(),0,10);
+        List<Message> conversationList = messageService.getConversationList(hostHolder.getUsers().getUserId(), 0, 10);
 
         List<ViewObject> conversations = new ArrayList<ViewObject>();
-        for (Message message:conversationList){
+        for (Message message : conversationList) {
             ViewObject vo = new ViewObject();
-            vo.set("message",message);
+            vo.set("message", message);
 
             //和当前用户联系起来的另外一个用户的id
-            int targetId = message.getFromId() == hostHolder.getUsers().getUserId()?message.getToId():message.getFromId();
-            vo.set("user",userService.getById(targetId));
+            int targetId = message.getFromId() == hostHolder.getUsers().getUserId() ? message.getToId() : message.getFromId();
+            vo.set("user", userService.getById(targetId));
             //还有多少条未读信息
-            vo.set("unReadCount",messageService.getConversationUnReadCount(hostHolder.getUsers().getUserId(),message.getConversationId()));
+            vo.set("unReadCount", messageService.getConversationUnReadCount(hostHolder.getUsers().getUserId(), message.getConversationId()));
 
             //这两个人有多少条会话
-            vo.set("conversationCount",messageService.getConversationCount(message.getConversationId()));
+            vo.set("conversationCount", messageService.getConversationCount(message.getConversationId()));
             conversations.add(vo);
         }
-        model.addAttribute("conversations",conversations);
+        model.addAttribute("conversations", conversations);
         return "letter";
+    }
+
+    @GetMapping(value = {"/msg/detail"})
+    public String detail(Model model,
+                         @PathParam("conversationId") String conversationId) {
+        if (hostHolder.getUsers() == null) {
+            ConverterUtil.getJSONString(999);
+        } else {
+            model.addAttribute("localUser", hostHolder.getUsers());
+        }
+
+        List<ViewObject> messages = new ArrayList<>();
+
+        //先拿10条
+        List<Message> messageList = messageService.getConversationList(hostHolder.getUsers().getUserId(), 0, 10);
+
+        for (Message message : messageList) {
+            ViewObject vo = new ViewObject();
+            vo.set("message",message);
+            vo.set("user",userService.getById(message.getFromId()));
+
+            //未读->已读
+            messageService.readStatusChange(message.getMessageId());
+            messages.add(vo);
+        }
+        model.addAttribute("messages",messages);
+        return "letterDetail";
     }
 }

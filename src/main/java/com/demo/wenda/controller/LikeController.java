@@ -77,11 +77,11 @@ public class LikeController {
     }
 
     /**
-     * 当前用户取消对某个回答的赞
+     * 当前用户取消对某个评论的赞
      * @param commentId
      * @return
      */
-    @PostMapping(value = {"/cancelLikeToAnswer"},params = {"commentId"})
+    @PostMapping(value = {"/dislike"},params = {"commentId"})
     @ResponseBody
     public String cancelLikeToAnswer(@PathParam("commentId") int commentId){
         //获取当前用户
@@ -91,7 +91,7 @@ public class LikeController {
             return ConverterUtil.getJSONString(999);
         }
 
-        boolean res = likeService.cancelLikeToAswer(hostUser.getUserId(),EntityType.ENTITY_ANSWER.getValue(),commentId);
+        boolean res = likeService.cancelLikeToAswer(hostUser.getUserId(),EntityType.ENTITY_COMMENT.getValue(),commentId);
 
         //成功返回0 ，失败返回1
         return ConverterUtil.getJSONString(res? 0 :1);

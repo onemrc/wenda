@@ -27,4 +27,7 @@ public interface MessageDAO {
 
     @Select({"select count(message_id) from ", TABLE_NAME, " where has_read=0 and to_id=#{userId} and conversation_id=#{conversationId}"})
     int getConversationUnreadCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
+
+    @Select({"select count(message_id) from ", TABLE_NAME, " where conversation_id=#{conversationId}"})
+    Integer getConversationCount(String  ConversationId);
 }

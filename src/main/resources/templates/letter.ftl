@@ -14,7 +14,7 @@
                             删除
                             </a>-->
                             <a href="/msg/detail?$conversation.message.conversationId">
-                                共$conversation.message.id条会话
+                                共${conversation.conversationCount!"0"}条会话
                             </a>
                         </div>
                     </div>
@@ -36,8 +36,9 @@
                     </div>
                 </li>
                 </#list>
-                </#if>
+                <#else>
                 <li>暂时没有任何私信~</li>
+                </#if>
                 </ul>
 
         </div>

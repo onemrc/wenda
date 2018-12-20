@@ -109,6 +109,9 @@ public class MessageController {
             vo.set("user",userService.getById(targetId));
             //还有多少条未读信息
             vo.set("unReadCount",messageService.getConversationUnReadCount(hostHolder.getUsers().getUserId(),message.getConversationId()));
+
+            //这两个人有多少条会话
+            vo.set("conversationCount",messageService.getConversationCount(message.getConversationId()));
             conversations.add(vo);
         }
         model.addAttribute("conversations",conversations);

@@ -17,17 +17,17 @@
         <a href="/" class="zu-top-link-logo" id="zh-top-link-logo" data-za-c="view_home" data-za-a="visit_home" data-za-l="top_navigation_zhihu_logo">牛客</a>
         <div class="top-nav-profile">
 
-            <#if user??>
+            <#if localUser??>
 
-            <a href="/user/${user.userId}" class="zu-top-nav-userinfo " id=":0" role="button" aria-haspopup="true" aria-activedescendant="">
-                <span class="name">${user.name!}</span>
-                <img class="Avatar" src="${user.headUrl!}">
+            <a href="/user/${localUser.userId}" class="zu-top-nav-userinfo " id=":0" role="button" aria-haspopup="true" aria-activedescendant="">
+                <span class="name">${localUser.name!}</span>
+                <img class="Avatar" src="${localUser.headUrl!}">
                     <span id="zh-top-nav-new-pm" class="zg-noti-number zu-top-nav-pm-count" style="visibility:hidden" data-count="0">
                     </span>
             </a>
             <ul class="top-nav-dropdown" id="top-nav-profile-dropdown" aria-labelledby=":0">
                 <li>
-                    <a href="/user/${user.userId}" tabindex="-1" id=":1">
+                    <a href="/user/${localUser.userId}" tabindex="-1" id=":1">
                         <i class="zg-icon zg-icon-dd-home"></i>我的主页
                     </a>
                 </li>
@@ -53,7 +53,7 @@
             </ul>
             </#if>
         </div>
-        <#if user??>
+        <#if localUser??>
         <button class="zu-top-add-question" id="zu-top-add-question">提问</button>
         </#if>
         <div role="search" id="zh-top-search" class="zu-top-search">
@@ -70,7 +70,7 @@
                 <li class="zu-top-nav-li " id="zh-top-nav-explore">
                     <a class="zu-top-nav-link" href="/pullfeeds">发现</a>
                 </li>
-                <#if user??>
+                <#if localUser??>
                 <li class="top-nav-noti zu-top-nav-li ">
                     <a class="zu-top-nav-link" href="#" id="zh-top-nav-count-wrap" role="button"><span class="mobi-arrow"></span>消息<span id="zh-top-nav-count" class="zu-top-nav-count zg-noti-number" style="display: none;">0</span></a>
                 </li>

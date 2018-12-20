@@ -116,7 +116,7 @@ public class IndexController {
             vo.set("user", userService.getById(question.getUserId()));
             vos.add(vo);
         }
-        model.addAttribute("user",hostHolder.getUsers());
+        model.addAttribute("localUser",hostHolder.getUsers());
         model.addAttribute("vos", vos);
         return "index";
     }
@@ -174,6 +174,7 @@ public class IndexController {
     public String userIndex(Model model,
                             @PathVariable("userId") Integer userId){
 
+
         User user = userService.getById(userId);
         ViewObject vo = new ViewObject();
 
@@ -191,6 +192,7 @@ public class IndexController {
 
         //当前用户有没有关注TA
         if (hostHolder.getUsers() != null){
+            model.addAttribute("localUser",hostHolder.getUsers());
             vo.set("followed",followService.isFollow(EntityType.ENTITY_USER.getValue(),userId,hostHolder.getUsers().getUserId()));
         }else {
             vo.set("followed",false);

@@ -7,22 +7,22 @@ import com.demo.wenda.enums.ReadStatus;
 import com.demo.wenda.service.MessageService;
 import com.demo.wenda.service.UserService;
 import com.demo.wenda.utils.ConverterUtil;
+import com.demo.wenda.vo.ViewObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 站内信
  */
 @Controller
-@RequestMapping(value = "/msg")
 public class MessageController {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
@@ -87,5 +87,31 @@ public class MessageController {
             logger.error("私信发送异常：{}",e.getMessage());
             return ConverterUtil.getJSONString(201,"私信发送失败");
         }
+    }
+
+    @GetMapping(value = {"/msg/list"})
+    public String list(Model model){
+        if (hostHolder.getUsers() == null){
+            ConverterUtil.getJSONString(999);
+        }else {
+            model.addAttribute("localUser",hostHolder.getUsers());
+        }
+
+        List<Message> conversationList = messageService.getConversationList(hostHolder.getUsers().getUserId(),0,10);
+
+        List<ViewObject> conversations = new ArrayList<ViewObject>();
+        for (Message message:conversationList){
+            ViewObject vo = new ViewObject();
+            vo.set("message",message);
+
+            //和当前用户联系起来的另外一个用户的id
+            int targetId = message.getFromId() == hostHolder.getUsers().getUserId()?message.getToId():message.getFromId();
+            vo.set("user",userService.getById(targetId));
+            //还有多少条未读信息
+            vo.set("unReadCount",messageService.getConversationUnReadCount(hostHolder.getUsers().getUserId(),message.getConversationId()));
+            conversations.add(vo);
+        }
+        model.addAttribute("conversations",conversations);
+        return "letter";
     }
 }

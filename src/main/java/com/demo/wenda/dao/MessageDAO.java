@@ -5,6 +5,7 @@ import com.demo.wenda.domain.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -17,7 +18,13 @@ public interface MessageDAO {
     @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{fromId}, #{toId}, #{content}, #{hasRead}, #{conversationId}, #{createDate})"})
     int addMessage(Message message);
 
+    @Select({"select ", INSERT_FIELDS, " , count(message_id) as id from ( select * from ", TABLE_NAME,
+            " where from_id=#{userId} or to_id=#{userId} order by create_date desc) tt group by conversation_id order by create_date desc limit #{offset}, #{limit}"})
+    List<Message> getConversationList(@Param("userId") int userId,
+                                      @Param("offset") int offset,
+                                      @Param("limit") int limit);
 
 
-
+    @Select({"select count(message_id) from ", TABLE_NAME, " where has_read=0 and to_id=#{userId} and conversation_id=#{conversationId}"})
+    int getConversationUnreadCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
 }

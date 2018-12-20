@@ -141,12 +141,14 @@ public class FollowController {
         }
 
         if (hostHolder.getUsers() != null) {
+            model.addAttribute("localUser",hostHolder.getUsers());
             model.addAttribute("followees", getUsersInfo(hostHolder.getUsers().getUserId(), IfollowerIds));
         } else {
             model.addAttribute("followees", getUsersInfo(0, IfollowerIds));
         }
         model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER.getValue()));
         model.addAttribute("curUser", userService.getById(userId));
+
         return "followers";
     }
 
@@ -168,6 +170,7 @@ public class FollowController {
         }
 
         if (hostHolder.getUsers() != null) {
+            model.addAttribute("localUser",hostHolder.getUsers());
             model.addAttribute("followees", getUsersInfo(hostHolder.getUsers().getUserId(), IfolloweeIds));
         } else {
             model.addAttribute("followees", getUsersInfo(0, IfolloweeIds));

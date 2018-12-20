@@ -101,4 +101,14 @@ public class QuestionService {
     public Long getUserQuestinCount(Integer userId){
         return questionDao.getUserQuestionCount(userId);
     }
+
+    /**
+     * 问题评论数 +1
+     * @param questionId
+     * @return
+     */
+    public Long incrCommentCount(Integer questionId){
+        return questionDao.incrCommentCount(questionId);
+    }
+
 }

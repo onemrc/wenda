@@ -30,4 +30,7 @@ public interface QuestionDao {
     Long getUserQuestionCount(int userId);
 
 
+//    update question set comment_count = comment_count+1 where question_id = 13;
+    @Update({"update "+TABLE_NAME+" set comment_count = comment_count+1 where question_id = #{questionId}"})
+    Long incrCommentCount(Integer questionId);
 }

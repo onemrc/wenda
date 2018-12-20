@@ -1,11 +1,14 @@
 package com.demo.wenda.controller;
 
+import com.demo.wenda.async.EventModel;
+import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.domain.Comment;
 import com.demo.wenda.domain.HostHolder;
 import com.demo.wenda.domain.User;
 import com.demo.wenda.enums.CommentStatus;
 import com.demo.wenda.enums.EntityType;
 import com.demo.wenda.service.CommentService;
+import com.demo.wenda.service.QuestionService;
 import com.demo.wenda.utils.ConverterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,18 +35,20 @@ public class CommentController {
 
     private CommentService commentService;
 
+    private QuestionService questionService;
+
     @Autowired
-    public CommentController(HostHolder hostHolder, CommentService commentService) {
+    public CommentController(HostHolder hostHolder, CommentService commentService, QuestionService questionService) {
         this.hostHolder = hostHolder;
         this.commentService = commentService;
+        this.questionService = questionService;
     }
 
     /*
-    添加回答
-    回答——>对问题的评论
-     */
+        添加回答
+        回答——>对问题的评论
+         */
     @RequestMapping(value = "/addAnswer", method = RequestMethod.POST)
-    @ResponseBody
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
 
@@ -56,10 +61,10 @@ public class CommentController {
                 return ConverterUtil.getJSONString(999);
             }
 
-            //用户在该问题下已经有回答
-            if (commentService.queryIdExist(questionId, EntityType.ENTITY_QUESTION.getValue(), hostUser.getUserId()) != null) {
-                return ConverterUtil.getJSONString(CommentStatus.IS_EXIST.getCode(), CommentStatus.IS_EXIST.getMsg());
-            }
+//            //用户在该问题下已经有回答
+//            if (commentService.queryIdExist(questionId, EntityType.ENTITY_QUESTION.getValue(), hostUser.getUserId()) != null) {
+//                return ConverterUtil.getJSONString(CommentStatus.IS_EXIST.getCode(), CommentStatus.IS_EXIST.getMsg());
+//            }
 
             comment.setEntityId(questionId);
             comment.setContent(content);
@@ -78,7 +83,12 @@ public class CommentController {
             comment.setUserId(hostUser.getUserId());
 
             commentService.addComment(comment);
+            //该问题回答数+1
+            questionService.incrCommentCount(questionId);
             logger.info("添加回答成功：questionId={}", questionId);
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("添加回答失败:{}", e.getMessage());

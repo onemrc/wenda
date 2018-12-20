@@ -61,4 +61,8 @@ public class CommentService {
         return commentDao.getContentById(commentId);
     }
 
+    public Integer getEntityTypeById(int id){
+        return commentDao.getEntityTypeById(id);
+    }
+
 }

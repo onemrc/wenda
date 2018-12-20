@@ -44,4 +44,7 @@ public interface CommentDao {
     @Select({"select content from",TABLE_NAME,"where comment_id = #{id}"})
     String getContentById(int id);
 
+    @Select({"select entity_type from",TABLE_NAME,"where comment_id = #{id}"})
+    Integer getEntityTypeById(int id);
+
 }

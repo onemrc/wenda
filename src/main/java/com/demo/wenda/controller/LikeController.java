@@ -45,11 +45,11 @@ public class LikeController {
     CommentService commentService;
 
     /**
-     * 当前用户给某个回答点赞
+     * 当前用户给某个评论点赞
      * @param commentId 评论（回答）id
      * @return
      */
-    @PostMapping(value = {"/addLikeToAnswer"},params = {"commentId"})
+    @PostMapping(value = {"/like"},params = {"commentId"})
     @ResponseBody
     public String addLikeToAnswer(@PathParam("commentId") int commentId){
         //获取当前用户
@@ -70,10 +70,10 @@ public class LikeController {
                 .setExts("questionId",String.valueOf(comment.getEntityId())));
 
         //点赞
-        Long likeCount = likeService.commentLike(hostUser.getUserId(),commentId, EntityType.ENTITY_ANSWER.getValue());
+        Long likeCount = likeService.commentLike(hostUser.getUserId(),commentId, EntityType.ENTITY_COMMENT.getValue());
 
         //返回最新点赞人数
-        return ConverterUtil.getJSONString(200,"likeCount",likeCount);
+        return ConverterUtil.getJSONString(0,"likeCount",likeCount);
     }
 
     /**

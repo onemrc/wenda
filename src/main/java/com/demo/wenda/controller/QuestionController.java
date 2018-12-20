@@ -163,7 +163,7 @@ public class QuestionController {
 
         model.addAttribute("followed",false);
         if (hostHolder.getUsers() != null){
-            model.addAttribute("user",hostHolder.getUsers());
+            model.addAttribute("localUser",hostHolder.getUsers());
             //当前用户是否已关注该问题
             model.addAttribute("followed",followService.follow(hostHolder.getUsers().getUserId(),questionId,EntityType.ENTITY_QUESTION.getValue()));
         }
@@ -196,6 +196,10 @@ public class QuestionController {
 
             comment.set("userHeadUrl",userService.getUserHeadUrl(answer.getUserId()));
 
+            comment.set("commentId",answer.getCommentId());
+
+//            comment.set("entityType",commentService.getEntityTypeById(answer.getCommentId()));
+
             //这个回答的内容
             comment.set("content",commentService.getContentById(answer.getCommentId()));
 
@@ -204,7 +208,7 @@ public class QuestionController {
             comment.set("commentCount",commentCount);
 
             //这个回答有多少个赞
-            comment.set("likeCount",likeService.getCommentLikeCount(EntityType.ENTITY_ANSWER.getValue(),answer.getCommentId()));
+            comment.set("likeCount",likeService.getCommentLikeCount(EntityType.ENTITY_COMMENT.getValue(),answer.getCommentId()));
 
             //当前用户是否给这个回答点过赞
             comment.set("liked",false);

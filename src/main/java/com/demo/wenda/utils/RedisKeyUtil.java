@@ -28,6 +28,8 @@ public class RedisKeyUtil {
     //某问题的浏览数
     private static final String QUESTION_LOOK="QUESTION_LOOK";
 
+    private static final String TIMELINE = "TIMELINE";
+
 
 
     /**
@@ -151,5 +153,10 @@ public class RedisKeyUtil {
      */
     public static String getQuestionLook(int questionId){
         return QUESTION_LOOK+SPILT+questionId;
+    }
+
+
+    public static String getTimelineKey(int userId) {
+        return TIMELINE + SPILT + String.valueOf(userId);
     }
 }

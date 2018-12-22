@@ -351,6 +351,20 @@ public class RedisService {
         }
     }
 
+    /*
+    返回列表中指定区间内的元素，区间以偏移量 START 和 END 指定
+     */
+    public List<String> lrange(String key, long start, long end){
+        Jedis jedis =null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.lrange(key,start,end);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
 //    /**
 //     * 移除有序集中的一个或多个成员，不存在的成员将被忽略
 //     * @param key key

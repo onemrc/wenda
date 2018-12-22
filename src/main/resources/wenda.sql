@@ -120,6 +120,23 @@ CREATE TABLE collection
    primary key (comment_id)
 )ENGINE=InnoDB;
 
+-- 发现
+CREATE TABLE collection
+(
+  id int(18)			NOT NULL	AUTO_INCREMENT,
+
+  type int(5)			NOT NULL	COMMENT'实体类型',
+
+
+  user_id  int(18)			NOT NULL	COMMENT'用户id',
+
+  create_date timestamp NOT NULL,
+
+  data varchar(20)			COMMENT'内容',
+
+   primary key (id)
+)ENGINE=InnoDB;
+
 
 -- 用redis ,不用mysql
 -- -- 关注

@@ -1,8 +1,12 @@
 package com.demo.wenda.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.demo.wenda.async.EventHandler;
+import com.demo.wenda.async.EventModel;
+import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.domain.*;
 import com.demo.wenda.enums.EntityType;
+import com.demo.wenda.enums.EventType;
 import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
 import com.demo.wenda.utils.RedisKeyUtil;
@@ -41,8 +45,10 @@ public class QuestionController {
 
     private final UserService userService;
 
+    private final EventProducer eventProducer;
+
     @Autowired
-    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService) {
+    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService, EventProducer eventProducer) {
         this.questionService = questionService;
         this.hostHolder = hostHolder;
         this.commentService = commentService;
@@ -51,6 +57,7 @@ public class QuestionController {
         this.redisService = redisService;
         this.followService = followService;
         this.userService = userService;
+        this.eventProducer = eventProducer;
     }
 
     /**

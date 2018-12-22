@@ -1,12 +1,16 @@
 package com.demo.wenda.controller;
 
+import com.demo.wenda.async.EventModel;
+import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.domain.Comment;
 import com.demo.wenda.domain.HostHolder;
 import com.demo.wenda.domain.User;
 import com.demo.wenda.enums.CommentStatus;
 import com.demo.wenda.enums.EntityType;
+import com.demo.wenda.enums.EventType;
 import com.demo.wenda.service.CommentService;
 import com.demo.wenda.service.QuestionService;
+import com.demo.wenda.service.UserService;
 import com.demo.wenda.utils.ConverterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,17 +36,23 @@ public class CommentController {
 
     private QuestionService questionService;
 
+    private final EventProducer eventProducer;
+
+    private final UserService userService;
+
     @Autowired
-    public CommentController(HostHolder hostHolder, CommentService commentService, QuestionService questionService) {
+    public CommentController(HostHolder hostHolder, CommentService commentService, QuestionService questionService, EventProducer eventProducer, UserService userService) {
         this.hostHolder = hostHolder;
         this.commentService = commentService;
         this.questionService = questionService;
+        this.eventProducer = eventProducer;
+        this.userService = userService;
     }
 
     /*
-        添加回答
-        回答——>对问题的评论
-         */
+                添加回答
+                回答——>对问题的评论
+                 */
     @RequestMapping(value = "/addAnswer", method = RequestMethod.POST)
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
@@ -81,6 +91,13 @@ public class CommentController {
             //该问题回答数+1
             questionService.incrCommentCount(questionId);
             logger.info("添加回答成功：questionId={}", questionId);
+
+            //异步发送一个私信给TA评论的人
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT)
+                    .setActorId(hostUser.getUserId())
+                    .setEntityType(EntityType.QUESTION.getValue())
+                    .setEntityId(questionId)
+                    .setEntityOwnerId(questionService.getById(questionId).getUserId()));
 
 
 

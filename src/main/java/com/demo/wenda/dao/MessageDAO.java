@@ -28,4 +28,7 @@ public interface MessageDAO {
 
     @Update({"update "+ TABLE_NAME +" set has_read=1 where message_id=#{messageId}"})
     Long readStatusChange(int messageId);
+
+    @Select({"select count(message_id) from ", TABLE_NAME, " where has_read=0 and to_id=#{userId} and from_id=#{fromId}"})
+    int getUnRead(@Param("userId") int userId, @Param("fromId") int fromId);
 }

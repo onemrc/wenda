@@ -1,5 +1,6 @@
 <#include "header.ftl">
 
+<#--评论问题 的宏-->
 <#macro comment_question vo>
 <div class="feed-item folding feed-item-hook feed-item-2
                         " feed-item-a="" data-type="a" id="feed-2" data-za-module="FeedItem" data-za-index="">
@@ -62,6 +63,7 @@
 </div>
 </#macro>
 
+<#--关注问题 的宏-->
 <#macro comment_question vo>
 <div class="feed-item folding feed-item-hook feed-item-2
                         " feed-item-a="" data-type="a" id="feed-2" data-za-module="FeedItem" data-za-index="">

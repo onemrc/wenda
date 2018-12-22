@@ -65,6 +65,12 @@ public class FindController {
         return "finds";
     }
 
+    /**
+     *
+     *  拉模式
+     * @param model
+     * @return
+     */
     @RequestMapping(path = {"/pullfeeds"}, method = {RequestMethod.GET, RequestMethod.POST})
     private String getPullFeeds(Model model) {
         if (hostHolder.getUsers()!=null){

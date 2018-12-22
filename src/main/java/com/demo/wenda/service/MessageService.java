@@ -43,4 +43,8 @@ public class MessageService {
     public Long readStatusChange(int messageId){
         return messageDAO.readStatusChange(messageId);
     }
+
+    public Integer getUnRead(int userId,int fromId){
+        return messageDAO.getUnRead(userId,fromId);
+    }
 }

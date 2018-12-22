@@ -14,12 +14,12 @@
                         <div class="zh-general-list clearfix">
                             <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
                                 <div class="zg-right">
-                                    <#if profileUser.followed>
+                                    <#if profileUser.followed == true>
                                     <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
                                     js-follow-user" data-status="1" data-id="$profileUser.user.userId">取消关注</button>
                                     <#else>
                                     <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
-                                    js-follow-user" data-id="$profileUser.user.userId">关注</button>
+                                    js-follow-user" data-id="${profileUser.user.userId}">关注</button>
                                     </#if>
                                 </div>
                                 <a title="Barty" class="zm-item-link-avatar" href="/user/${profileUser.user.userId}">

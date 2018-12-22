@@ -31,7 +31,8 @@
             </div>
             <div class="zm-side-section">
                 <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
-                    <#if followed??>
+                    <#if followed == true>
+
                     <button class="follow-button zg-follow zg-btn-white js-follow-question" data-id="${question.questionId}"
                             data-status="1">
                         取消关注

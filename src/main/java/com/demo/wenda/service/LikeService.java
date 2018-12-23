@@ -113,4 +113,14 @@ public class LikeService {
 
         return res.size() == 2 && (Long) res.get(0) > 0 && (Long) res.get(1) > 0;
     }
+
+    /**
+     * 某用户被点赞总数
+     * @param userId
+     * @return
+     */
+    public String getUserLikedCount(int userId){
+        String key = RedisKeyUtil.getUserLikecount(userId);
+        return redisService.get(key);
+    }
 }

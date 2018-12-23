@@ -7,7 +7,9 @@ import com.demo.wenda.domain.User;
 import com.demo.wenda.enums.EventType;
 import com.demo.wenda.enums.ReadStatus;
 import com.demo.wenda.service.MessageService;
+import com.demo.wenda.service.RedisService;
 import com.demo.wenda.service.UserService;
+import com.demo.wenda.utils.RedisKeyUtil;
 import com.demo.wenda.utils.WendaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,10 +30,13 @@ public class LikeHandler implements EventHandler {
 
     private final UserService userService;
 
+    private final RedisService redisService;
+
     @Autowired
-    public LikeHandler(MessageService messageService, UserService userService) {
+    public LikeHandler(MessageService messageService, UserService userService, RedisService redisService) {
         this.messageService = messageService;
         this.userService = userService;
+        this.redisService = redisService;
     }
 
     @Override
@@ -46,6 +51,10 @@ public class LikeHandler implements EventHandler {
         message.setHasRead(ReadStatus.NOT_READ.getCode());
         message.setConversationId();
         messageService.addMessage(message);
+
+        //被点赞数+1
+        String key = RedisKeyUtil.getUserLikecount(eventModel.getEntityOwnerId());
+        redisService.incr(key);
     }
 
     @Override

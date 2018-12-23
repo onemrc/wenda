@@ -30,6 +30,9 @@ public class RedisKeyUtil {
 
     private static final String TIMELINE = "TIMELINE";
 
+    //某用户被赞数量
+    private static final String USER_LIKEDCOUNT = "USER_LIKEDCOUNT";
+
 
 
     /**
@@ -158,5 +161,10 @@ public class RedisKeyUtil {
 
     public static String getTimelineKey(int userId) {
         return TIMELINE + SPILT + String.valueOf(userId);
+    }
+
+
+    public static String getUserLikecount(int userId){
+        return USER_LIKEDCOUNT+SPILT+userId;
     }
 }

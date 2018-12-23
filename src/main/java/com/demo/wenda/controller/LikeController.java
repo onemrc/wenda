@@ -58,7 +58,7 @@ public class LikeController {
 
         Comment comment = commentService.getCommentById(commentId);
 
-        //异步发送一个私信给TA点赞的人
+        //异步发送一个私信给TA点赞的人,那个人被点赞数+1
         eventProducer.fireEvent(new EventModel(EventType.LIKE)
                 .setActorId(hostUser.getUserId())
                 .setEntityType(EntityType.ENTITY_COMMENT.getValue())

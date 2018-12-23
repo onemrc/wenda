@@ -72,7 +72,7 @@ public class FollowService {
     获取用户关注的实体数量
      */
     public Long getFolloweeCount(int entityType, int entityId) {
-        String followeeKey = RedisKeyUtil.getFolloweeKey(entityType, entityId);
+        String followeeKey = RedisKeyUtil.getFolloweeKey(entityId,entityType);
         return redisService.zcard(followeeKey);
     }
 

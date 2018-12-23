@@ -221,7 +221,8 @@ public class FollowController {
         } else {
             model.addAttribute("followees", getUsersInfo(0, IfollowerIds));
         }
-        model.addAttribute("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER.getValue()));
+        Long followerCount = followService.getFollowerCount(EntityType.ENTITY_USER.getValue(),userId);
+        model.addAttribute("followerCount", followerCount);
         model.addAttribute("curUser", userService.getById(userId));
 
         return "followers";
@@ -250,7 +251,7 @@ public class FollowController {
         } else {
             model.addAttribute("followees", getUsersInfo(0, IfolloweeIds));
         }
-        model.addAttribute("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER.getValue(),userId ));
+        model.addAttribute("followeeCount", followService.getFolloweeCount(EntityType.ENTITY_USER.getValue(),userId));
         model.addAttribute("curUser", userService.getById(userId));
         return "followees";
     }
@@ -273,6 +274,9 @@ public class FollowController {
 
             //该用户被多少人关注
             vo.set("followeeCount", followService.getFolloweeCount(uid, EntityType.ENTITY_USER.getValue()));
+
+            //该用户共有多少个赞
+            vo.set("userLikedCount",likeService.getUserLikedCount(uid));
 
             //当前用户是否关注了这个人
             if (localUserId != 0) {

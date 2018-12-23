@@ -23,16 +23,15 @@ CREATE TABLE  user
 
 
 
--- -- 记录用户的身份验证信息
--- CREATE TABLE proof
--- (
--- 	proof_id	int(18)			NOT NULL	AUTO_INCREMENT,
--- 	type  varchar(10)		NOT NULL	COMMENT'身份类型',
--- 	real_name  varchar(10)		NOT NULL	COMMENT'身份名称',
--- 	user_id		int(18)		NOT NULL,
---
--- 	primary key (proof_id)
--- )ENGINE=InnoDB;
+-- 记录用户的身份验证信息
+CREATE TABLE proof
+(
+	proof_id	int(18)			NOT NULL	AUTO_INCREMENT,
+	type  int(10)		NOT NULL	COMMENT'身份类型',
+	real_name  varchar(10)		NOT NULL	COMMENT'身份名称',
+	user_id		int(18)		NOT NULL,
+	primary key (proof_id)
+)ENGINE=InnoDB;
 
 
 

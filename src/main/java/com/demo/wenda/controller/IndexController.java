@@ -1,13 +1,16 @@
 package com.demo.wenda.controller;
 
 import com.demo.wenda.domain.HostHolder;
+import com.demo.wenda.domain.Proof;
 import com.demo.wenda.domain.Question;
 import com.demo.wenda.domain.User;
 import com.demo.wenda.dto.QuestionDTO;
 import com.demo.wenda.enums.EntityType;
+import com.demo.wenda.enums.ProofType;
 import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
 import com.demo.wenda.utils.ResultVoUtil;
+import com.demo.wenda.utils.ValidatorUtil;
 import com.demo.wenda.vo.ResultVo;
 import com.demo.wenda.vo.ViewObject;
 import org.slf4j.Logger;
@@ -43,9 +46,10 @@ public class IndexController {
 
     private final CollectionService collectionService;
 
+    private final ProofService proofService;
 
     @Autowired
-    public IndexController(QuestionService questionService, UserService userService, CommentService commentService, TagService tagService, HostHolder hostHolder, FollowService followService, CollectionService collectionService) {
+    public IndexController(QuestionService questionService, UserService userService, CommentService commentService, TagService tagService, HostHolder hostHolder, FollowService followService, CollectionService collectionService, ProofService proofService) {
         this.questionService = questionService;
         this.userService = userService;
         this.commentService = commentService;
@@ -53,9 +57,11 @@ public class IndexController {
         this.hostHolder = hostHolder;
         this.followService = followService;
         this.collectionService = collectionService;
+        this.proofService = proofService;
     }
 
-//    @GetMapping(value = {"/","/index"})
+
+    //    @GetMapping(value = {"/","/index"})
 //    public String index(Model model){
 //        List<Question> questionList = questionService.getLatestQuestions();
 //
@@ -233,6 +239,33 @@ public class IndexController {
             } else {
                 model.addAttribute("msg", "修改失败");
             }
+        }
+
+        return "/editUser/" + userId;
+    }
+
+    @PostMapping(path = {"/validatorUser/{userId}"})
+    public String validator(@RequestParam("txtUserName") String txtUserName,
+                            @RequestParam("password") String password,
+                            @RequestParam("txtSecretCode") String txtSecretCode,
+                            @RequestParam("proofName") String proofName,
+                            @PathVariable("userId") Integer userId,
+                            Model model) {
+        boolean res = ValidatorUtil.validatorReal(txtUserName, password, txtSecretCode, proofName);
+
+        if (res) {
+            Proof proof = new Proof();
+            if (proofName.equals("学生")) {
+                proof.setType(ProofType.STUDENT.getValue());
+            } else if (proofName.equals("教师")) {
+                proof.setType(ProofType.TEACHER.getValue());
+            }
+            proof.setTypeName(proofName);
+            proof.setUserId(userId);
+            proofService.addProof(proof);
+            model.addAttribute("msg", "认证成功");
+        } else {
+            model.addAttribute("msg", "认证失败，你可能输错了");
         }
 
         return "/editUser/" + userId;

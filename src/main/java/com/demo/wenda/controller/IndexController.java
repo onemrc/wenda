@@ -200,6 +200,41 @@ public class IndexController {
         return "profile";
     }
 
+    @RequestMapping(path = {"/editUser/{userId}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String editUser(@PathVariable("userId") Integer userId,
+                           Model model) {
+        if (hostHolder.getUsers() != null) {
+            model.addAttribute("localUser", hostHolder.getUsers());
+        }
+        return "editUser";
+    }
 
+    @RequestMapping(path = {"/editUserName/{userId}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String editUserName(@RequestParam("name") String name,
+                               @PathVariable("userId") Integer userId, Model model) {
+        boolean res = userService.editName(userId, name) > 0;
 
+        model.addAttribute("msg", res ? "修改成功" : "修改失败");
+
+        return "/editUser/" + userId;
+    }
+
+    @PostMapping(path = {"/editUserPass/{userId}"})
+    public String editPass(@RequestParam("oldPass") String oldPass,
+                           @RequestParam("newPass") String newPass,
+                           @PathVariable("userId") Integer userId,
+                           Model model) {
+        boolean res = userService.verifyPass(hostHolder.getUsers().getName(), oldPass);
+
+        if (res) {
+            boolean editRes = userService.editPass(newPass, userId) > 0;
+            if (editRes) {
+                model.addAttribute("msg", "修改成功");
+            } else {
+                model.addAttribute("msg", "修改失败");
+            }
+        }
+
+        return "/editUser/" + userId;
+    }
 }

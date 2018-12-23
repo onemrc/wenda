@@ -1,10 +1,7 @@
 package com.demo.wenda.dao;
 
 import com.demo.wenda.domain.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,6 +24,9 @@ public interface UserDao {
     @Select({"select salt from",TABLE_NAME,"where name = #{str} OR email = #{str}"})
     String getSaltByStr(String str);
 
+    @Select({"select salt from", TABLE_NAME, "where user_id = #{userId}"})
+    String getSaltById(int userId);
+
     @Select({"select * from",TABLE_NAME,"where phone = #{str} OR email = #{str}"})
     User selectUserPhoneOrEmail(String str);
 
@@ -44,5 +44,11 @@ public interface UserDao {
 
     @Select({"select head_url from",TABLE_NAME,"where user_id = #{id}"})
     String getHeadUrlById(int id);
+
+    @Update({"update ", TABLE_NAME, " set name=#{name}  where user_id = #{id}"})
+    Integer editName(int id, String name);
+
+    @Update({"update ", TABLE_NAME, " set password=#{pass}  where user_id = #{id}"})
+    Integer editPass(int id, String pass);
 
 }

@@ -1,11 +1,14 @@
 <#include "header.ftl">
 <link rel="stylesheet" href="styles/index.css">
 <link rel="stylesheet" href="styles/detail.css">
+<link rel="stylesheet" href="styles/common.css">
     <div class="zg-wrap zu-main clearfix " role="main">
         <div class="zu-main-content">
             <div class="zu-main-content-inner">
                 <div class="zg-section" id="zh-home-list-title">
                     <i class="zg-icon zg-icon-feedlist"></i>最新动态
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <i class="zg-icon zg-icon-feedlist"></i><a href="hot">近期热门话题</a>
                     <input type="hidden" id="is-topstory">
                     <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
                         <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
@@ -42,7 +45,7 @@
                                             <div class="zm-item-vote-info" data-votecount="4168" data-za-module="VoteInfo">
                                                 <span class="voters text">
                                                     <a href="#" class="more text">
-                                                        <span class="js-voteCount">4168</span>&nbsp;人赞同</a></span>
+                                                        <span class="js-voteCount">0</span>&nbsp;人赞同</a></span>
                                             </div>
                                             <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="123114" data-action="/answer/content" data-author-name="${vo.user.name!}" data-entry-url="/question/19857995/answer/13174385">
                                                 <div class="zh-summary summary clearfix">${vo.question.content!}</div>

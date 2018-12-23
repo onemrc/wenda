@@ -7831,7 +7831,7 @@ a>.invisible {
     z-index:20;
     width:100%;
     height:45px;
-    background:#3d444c;
+    background: #4b7f6c;
     /*background:-webkit-linear-gradient(top,#086ed5,#055db5);
     background:linear-gradient(to bottom,#086ed5,#055db5);*/
     border-bottom:1px solid #044e97;
@@ -8134,7 +8134,7 @@ html.no-touchevents .mobile-top-nav-popup .top-nav-dropdown a:hover {
     height: 45px;
     line-height: 45px;
     text-indent: 46px;
-    color: #888;
+    color: #eff6fa;
     text-decoration: none;
     border-top: 0;
     background: transparent;
@@ -13550,3 +13550,4 @@ html.no-touchevents .carousel:hover .carousel-navigation-btn {
     font-size:12px;
     color:#666
 }
+

@@ -182,4 +182,45 @@ public class UserService {
         }
         return true;
     }
+
+    /**
+     * 修改用户名
+     *
+     * @param id
+     * @param name
+     * @return
+     */
+    public Integer editName(int id, String name) {
+        return userDao.editName(id, name);
+    }
+
+    /**
+     * 验证密码
+     *
+     * @param str  用户名或邮箱
+     * @param pass
+     * @return
+     */
+    public Boolean verifyPass(String str, String pass) {
+        String salt = userDao.getSaltByStr(str);
+        String real_pass = MD5Util.md5(pass + salt);
+
+        //验证
+        User user = userDao.queryUser(str, real_pass);
+
+        return user != null;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param newPass
+     * @param userId
+     * @return
+     */
+    public Integer editPass(String newPass, int userId) {
+        String salt = userDao.getSaltById(userId);
+        String real_pass = MD5Util.md5(newPass + salt);
+        return userDao.editPass(userId, real_pass);
+    }
 }

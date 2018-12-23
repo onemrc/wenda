@@ -50,7 +50,7 @@ public class MessageController {
      * @param content 内容
      * @return
      */
-    @PostMapping(value = {"msg/add"})
+    @PostMapping(value = {"msg/addMessage"})
     @ResponseBody
     public String add(@RequestParam("toName") String toName,
                       @RequestParam("content") String content) {
@@ -84,7 +84,7 @@ public class MessageController {
 
             messageService.addMessage(message);
 
-            return ConverterUtil.getJSONString(200, "发送成功");
+            return ConverterUtil.getJSONString(0, "发送成功");
         } catch (Exception e) {
             logger.error("私信发送异常：{}", e.getMessage());
             return ConverterUtil.getJSONString(201, "私信发送失败");

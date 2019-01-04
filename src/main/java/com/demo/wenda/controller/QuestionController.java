@@ -85,7 +85,19 @@ public class QuestionController {
             question.setUserId(hostHolder.getUsers().getUserId());
             question.setCommentCount(0);
 
-            questionService.addQuestion(question);
+            Integer newQuestionId = questionService.addQuestion(question);
+
+            //初始化浏览数
+            redisService.set(RedisKeyUtil.getQuestionLook(newQuestionId), 0 + "");
+
+            //问题id加入浏览榜单
+            redisService.zadd(RedisKeyUtil.getQuestionLookcount(), 0, newQuestionId + "");
+
+            //问题id加入like榜单
+            redisService.zadd(RedisKeyUtil.getQuestionLikecount(), 0, newQuestionId + "");
+
+            //问题id加入热门榜单
+            redisService.zadd(RedisKeyUtil.getHotList(), 0, newQuestionId + "");
 
             return ConverterUtil.getJSONString(0, "问题发布成功");
         } catch (Exception e) {
@@ -94,61 +106,57 @@ public class QuestionController {
         }
     }
 
-    @RequestMapping(value = {"/question/addQuestion"}, method = RequestMethod.POST)
-    @ResponseBody
-    public String addQuestion(@RequestParam("title") String title,
-                             @RequestParam("content") String content,
-                              @RequestParam(value = "tag_name",defaultValue = "") String tagName,
-                              @RequestParam(value = "anonymous",defaultValue = "1") int anonymous){
-        User hostUser = hostHolder.getUsers();
-        if (hostUser == null) {
-            return ConverterUtil.getJSONString(999);
-        }
-
-
-
-        Question question = new Question();
-
-
-        question.setTitle(title);
-        question.setContent(content);
-
-        question.setUserId(hostUser.getUserId());
-
-        question.setAnonymous(anonymous);
-
-//        question.setLookCount(0);
-        question.setCommentCount(0);
-
-        //存进数据库，顺便拿到新的id
-        Integer newQuestionId =  questionService.addQuestion(question);
-
-        if (!StringUtils.isEmpty(tagName)){
-            String[] tags =  tagName.split(" ");
-            for (String tag:tags){
-                if (tagService.getIdByName(tag) == null){//没有这个标签
-                    //存进数据库
-                    Integer newTagId = tagService.addTag(tag);
-
-                    //存进redis
-                    questionService.addTag(newQuestionId,newTagId);
-
-                    tagService.addQuestion(newQuestionId,newTagId);
-                }else {
-                    Integer TagId = tagService.getIdByName(tag);
-                    //存进redis
-                    questionService.addTag(newQuestionId,TagId);
-
-                    tagService.addQuestion(newQuestionId,TagId);
-                }
-            }
-        }
-        //初始化浏览数
-        redisService.set(RedisKeyUtil.getQuestionLook(newQuestionId),0+"");
-
-
-        return ConverterUtil.getJSONString(200,"发布成功");
-    }
+//    @RequestMapping(value = {"/question/addQuestion"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public String addQuestion(@RequestParam("title") String title,
+//                             @RequestParam("content") String content,
+//                              @RequestParam(value = "tag_name",defaultValue = "") String tagName,
+//                              @RequestParam(value = "anonymous",defaultValue = "1") int anonymous){
+//        User hostUser = hostHolder.getUsers();
+//        if (hostUser == null) {
+//            return ConverterUtil.getJSONString(999);
+//        }
+//
+//
+//
+//        Question question = new Question();
+//
+//
+//        question.setTitle(title);
+//        question.setContent(content);
+//
+//        question.setUserId(hostUser.getUserId());
+//
+//        question.setAnonymous(anonymous);
+//
+////        question.setLookCount(0);
+//        question.setCommentCount(0);
+//
+//        //存进数据库，顺便拿到新的id
+//        Integer newQuestionId =  questionService.addQuestion(question);
+//
+//        if (!StringUtils.isEmpty(tagName)){
+//            String[] tags =  tagName.split(" ");
+//            for (String tag:tags){
+//                if (tagService.getIdByName(tag) == null){//没有这个标签
+//                    //存进数据库
+//                    Integer newTagId = tagService.addTag(tag);
+//
+//                    //存进redis
+//                    questionService.addTag(newQuestionId,newTagId);
+//
+//                    tagService.addQuestion(newQuestionId,newTagId);
+//                }else {
+//                    Integer TagId = tagService.getIdByName(tag);
+//                    //存进redis
+//                    questionService.addTag(newQuestionId,TagId);
+//
+//                    tagService.addQuestion(newQuestionId,TagId);
+//                }
+//            }
+//        }
+//        return ConverterUtil.getJSONString(200,"发布成功");
+//    }
 
 
 

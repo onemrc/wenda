@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
+import redis.clients.jedis.params.sortedset.ZIncrByParams;
 
 import java.io.IOException;
 import java.util.List;
@@ -364,6 +365,77 @@ public class RedisService {
             returnToPool(jedis);
         }
     }
+
+    /*
+    有序集合中指定成员的分数加上增量 increment
+     */
+    public Double zincrby(String key, double score, String member) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zincrby(key, score, member);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    返回有序集中，成员的分数值。
+     */
+    public Double zscore(String key, String member) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zscore(key, member);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    向有序集合添加一个或多个成员，或者更新已存在成员的分数
+     */
+    public Long zadd(String key, double score, String member) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zadd(key, score, member);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    移除有序集中的一个或多个成员，不存在的成员将被忽略。
+     */
+    public Long zrem(String key, String... members) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zrem(key, members);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    返回有序集中，指定区间内的成员. 其中成员的位置按分数值递减(从大到小)来排列。
+     */
+    Set<String> zrevrange(String key, long start, long end) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+
+            return jedis.zrevrange(key, start, end);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
 
 //    /**
 //     * 移除有序集中的一个或多个成员，不存在的成员将被忽略

@@ -127,6 +127,22 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping(value = {"/hot"})
+    public String hotList(Model model) {
+        List<Question> questionList = questionService.getHotQuestion();
+        List<ViewObject> vos = new ArrayList<>();
+        for (Question question : questionList) {
+            ViewObject vo = new ViewObject();
+            vo.set("question", question);
+            vo.set("followCount", followService.getFollowerCount(EntityType.QUESTION.getValue(), question.getQuestionId()));
+            vo.set("user", userService.getById(question.getUserId()));
+            vos.add(vo);
+        }
+        model.addAttribute("localUser", hostHolder.getUsers());
+        model.addAttribute("vos", vos);
+        return "hot";
+    }
+
     @RequestMapping(value = "/home")
     public String Hello(){
         return "home";

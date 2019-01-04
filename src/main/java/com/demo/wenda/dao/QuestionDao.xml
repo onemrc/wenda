@@ -17,4 +17,14 @@
     </if>
     LIMIT #{offset},#{limit}
 </select>
+
+    <select id="selectHotQuestion" resultType="Question">
+        SELECT * from
+        <include refid="table"/>
+        where question_id in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

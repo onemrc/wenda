@@ -54,6 +54,9 @@ public class LikeHandler implements EventHandler {
 
         //被点赞数+1
         String key = RedisKeyUtil.getUserLikecount(eventModel.getEntityOwnerId());
+
+        //该问题下总点赞数+1
+        redisService.zincrby(RedisKeyUtil.getQuestionLikecount(), 1, eventModel.getExt("questionId"));
         redisService.incr(key);
     }
 

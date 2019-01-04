@@ -5,6 +5,7 @@ import com.demo.wenda.domain.User;
 import com.demo.wenda.enums.EntityType;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -47,4 +48,6 @@ public interface CommentDao {
     @Select({"select entity_type from",TABLE_NAME,"where comment_id = #{id}"})
     Integer getEntityTypeById(int id);
 
+    @Select({"select create_date from", TABLE_NAME, "where entity_id = #{questionId} and entity_type = 0 order by create_date"})
+    List<String> getQuestionLastCommentTime(int questionId);
 }

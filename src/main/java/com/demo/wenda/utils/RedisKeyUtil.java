@@ -34,6 +34,18 @@ public class RedisKeyUtil {
     private static final String USER_LIKEDCOUNT = "USER_LIKEDCOUNT";
 
 
+    //热门榜单
+    private static final String HOT_LIST = "HOT_LIST";
+
+    //某问题浏览数
+    private static final String QUESTION_LOOKCOUNT = "QUESTION_LOOKCOUNT";
+
+    //某问题下的总点赞数
+    private static final String QUESTION_LIKECOUNT = "QUESTION_LIKECOUNT";
+
+
+    //某问题下的总评论数
+    private static final String QUESTION_COMMENTCOUNT = "QUESTION_COMMENTCOUNT";
 
     /**
      * 每个实体(作为key)，粉丝存入该key对应的值中
@@ -166,5 +178,45 @@ public class RedisKeyUtil {
 
     public static String getUserLikecount(int userId){
         return USER_LIKEDCOUNT+SPILT+userId;
+    }
+
+    /**
+     * 热榜榜单集合
+     * <p>
+     * member:问题id
+     * scores:得分
+     */
+    public static String getHotList() {
+        return HOT_LIST;
+    }
+
+    /**
+     * 问题浏览数集合
+     * <p>
+     * member:问题id
+     * scores:浏览数
+     */
+    public static String getQuestionLookcount() {
+        return QUESTION_LOOKCOUNT;
+    }
+
+    /**
+     * 问题底下回答总点赞数集合
+     * <p>
+     * member:问题id
+     * scores:该问题下的回答总点赞数
+     */
+    public static String getQuestionLikecount() {
+        return QUESTION_LIKECOUNT;
+    }
+
+    /**
+     * 问题底下回答总评论数集合
+     * <p>
+     * member:问题id
+     * scores:该问题下的回答总评论数
+     */
+    public static String getQuestionCommentcount() {
+        return QUESTION_COMMENTCOUNT;
     }
 }

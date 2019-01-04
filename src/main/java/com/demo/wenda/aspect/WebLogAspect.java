@@ -32,6 +32,10 @@ public class WebLogAspect {
     @Pointcut("execution(public * com.demo.wenda.controller.QuestionController.questionDetail(..))")
     public void questionDetail(){}
 
+    @Pointcut("execution(public * com.demo.wenda.controller.CommentController.addComment(..))")
+    public void questionComment() {
+    }
+
 
     /**
      * 每次请求问题详情后，该问题浏览数 +1
@@ -51,6 +55,31 @@ public class WebLogAspect {
         }else {
             String key = RedisKeyUtil.getQuestionLook(questionId);
             redisService.incr(key);
+
+            //该问题浏览榜 浏览数+1
+            redisService.zincrby(RedisKeyUtil.getQuestionLookcount(), 1, questionId + "");
+        }
+    }
+
+    /**
+     * 每次添加评论，该问题总评论数+1
+     */
+    @After("questionComment()")
+    public void doAfterquestionComment(JoinPoint joinPoint) {
+        //拿到对应的questionId
+        Integer questionId = null;
+        Object[] objects = joinPoint.getArgs();
+        for (Object o : objects) {
+            if (o instanceof Integer) {
+                questionId = (Integer) o;
+            }
+        }
+        if (questionId == null) {
+            logger.error("获取不到对应的questionId");
+        } else {
+
+            //该问题评论榜 评论数+1
+            redisService.zincrby(RedisKeyUtil.getQuestionCommentcount(), 1, questionId + "");
         }
     }
 }

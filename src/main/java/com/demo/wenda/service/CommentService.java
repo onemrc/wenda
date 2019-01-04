@@ -5,6 +5,7 @@ import com.demo.wenda.domain.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,6 +64,20 @@ public class CommentService {
 
     public Integer getEntityTypeById(int id){
         return commentDao.getEntityTypeById(id);
+    }
+
+    /**
+     * 获取某问题最新评论时间
+     *
+     * @param questionId
+     * @return
+     */
+    public String getQuestionLastCommentTime(int questionId) {
+        List<String> allTime = commentDao.getQuestionLastCommentTime(questionId);
+        if (allTime.size() > 0) {
+            return commentDao.getQuestionLastCommentTime(questionId).get(0);
+        }
+        return null;
     }
 
 }

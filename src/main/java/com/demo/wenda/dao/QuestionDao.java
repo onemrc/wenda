@@ -4,6 +4,7 @@ import com.demo.wenda.domain.Question;
 import com.demo.wenda.domain.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -33,4 +34,9 @@ public interface QuestionDao {
 //    update question set comment_count = comment_count+1 where question_id = 13;
     @Update({"update "+TABLE_NAME+" set comment_count = comment_count+1 where question_id = #{questionId}"})
     Long incrCommentCount(Integer questionId);
+
+    @Select({"select create_time from " + TABLE_NAME + " where question_id= #{questionId}"})
+    String getTime(int questionId);
+
+    List<Question> selectHotQuestion(@Param("list") List list);
 }

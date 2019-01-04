@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,24 @@ public class QuestionService {
 
     public List<Question> getLatestQuestions() {
         return questionDao.selectLatestQuestions();
+    }
+
+    /**
+     * 获取热榜 问题id
+     *
+     * @return
+     */
+    public List<Question> getHotQuestion() {
+
+        //前100
+        Set<String> questions = redisService.zrevrange(RedisKeyUtil.getHotList(), 0, 100);
+
+        List list = new ArrayList();
+        for (String questionId : questions) {
+            list.add(questionDao.getById(Integer.valueOf(questionId)));
+        }
+
+        return list;
     }
 
     public int addQuestion(Question question) {
@@ -109,6 +128,16 @@ public class QuestionService {
      */
     public Long incrCommentCount(Integer questionId){
         return questionDao.incrCommentCount(questionId);
+    }
+
+    /**
+     * 获取问题创建时间
+     *
+     * @param questionId
+     * @return
+     */
+    public String getCreateTime(int questionId) {
+        return questionDao.getTime(questionId);
     }
 
 }

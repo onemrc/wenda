@@ -69,6 +69,7 @@ public class LikeController {
         //点赞
         Long likeCount = likeService.commentLike(hostUser.getUserId(),commentId, EntityType.ENTITY_COMMENT.getValue());
 
+
         //返回最新点赞人数
         return ConverterUtil.getJSONString(0,"likeCount",likeCount);
     }

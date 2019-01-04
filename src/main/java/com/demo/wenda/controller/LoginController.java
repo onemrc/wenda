@@ -37,13 +37,16 @@ public class LoginController {
     @RequestMapping(value = "/do_login")
     public String doLogin(HttpServletResponse response,
                           @RequestParam("str") String str,
-                          @RequestParam("password") String password) {
+                          @RequestParam("password") String password,
+                          Model model) {
 
         boolean result = userService.login(response, str, password);
         if (result) {
             logger.info("用户登录成功");
         } else {
             logger.info("登录失败");
+            model.addAttribute("msg", "用户名不存在或密码不符");
+            return "login";
         }
         return "redirect:/";
     }

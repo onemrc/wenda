@@ -45,10 +45,12 @@ public class QuestionController {
 
     private final UserService userService;
 
+    private final ProofService proofService;
+
     private final EventProducer eventProducer;
 
     @Autowired
-    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService, EventProducer eventProducer) {
+    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService, ProofService proofService, EventProducer eventProducer) {
         this.questionService = questionService;
         this.hostHolder = hostHolder;
         this.commentService = commentService;
@@ -57,6 +59,7 @@ public class QuestionController {
         this.redisService = redisService;
         this.followService = followService;
         this.userService = userService;
+        this.proofService = proofService;
         this.eventProducer = eventProducer;
     }
 
@@ -225,10 +228,12 @@ public class QuestionController {
                 comment.set("liked",likeService.cancelLikeToAswer(hostHolder.getUsers().getUserId(),EntityType.ENTITY_ANSWER.getValue(),answer.getCommentId()));
                 comment.set("followed",followService.follow(hostHolder.getUsers().getUserId(),answer.getCommentId(),EntityType.ENTITY_ANSWER.getValue()));
             }
+            comment.set("proofName", proofService.getProofByUserId(answer.getUserId()).getTypeName());
 
             comments.add(comment);
         }
         model.addAttribute("comments",comments);
+
 
         return "detail";
     }

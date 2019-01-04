@@ -32,8 +32,12 @@ public class ProofService {
      * @param userId
      * @return
      */
-    public Proof getProofBiUserId(int userId) {
+    public Proof getProofByUserId(int userId) {
         return proofDAO.getProofByUserId(userId);
+    }
+
+    public Proof getProofByAccount(String account) {
+        return proofDAO.getProofByAccount(account);
     }
 
 }

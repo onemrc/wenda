@@ -96,6 +96,9 @@
                             <a class="zm-item-link-avatar avatar-link" href="" target="_blank" data-tip="p$t$yingxiaodao">
                                 <img src="${comment.userHeadUrl}" class="zm-list-avatar avatar"></a>
                             <a class="author-link" data-tip="p$t$yingxiaodao" target="_blank" href="">${comment.userName}</a>
+                            <#if comment.proofName??>
+                            （${comment.proofName}）
+                            </#if>
                         </div>
                         <div class="zm-item-vote-info">
                                 <span class="voters text">

@@ -1,6 +1,8 @@
 server:
   port: 8080
 
+
+
 #  url的前缀
 #  servlet:
 #    context-path: /wenda
@@ -28,8 +30,7 @@ spring:
 
 
 
-
-#  freemarker config
+  #  freemarker config
 #  freemarker:
 #    suffix: .html
   #

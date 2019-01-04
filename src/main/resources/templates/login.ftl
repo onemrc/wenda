@@ -5,19 +5,29 @@
     <title>牛客 - 与世界分享你的知识、经验和见解</title>
     <link rel="dns-prefetch" href="">
     <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.min.css">
+    <#if msg??>
+        <script>
 
+        </script>
+    </#if>
 </head>
 <body class="zhi  no-auth">
+<#if msg??>
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert">
+            &times;
+        </a>
+        <strong>${msg}</strong>
+    </div>
+</#if>
+
 <div class="index-main">
     <div class="index-main-body">
         <div class="index-header">
             <h1 class="logo hide-text"><img src="images/res/nk.png" alt=""></h1>
             <h2 class="subtitle">
-                <#if msg??>
-                ${msg!}
-                <#else>
                 凝聚知识的力量
-                </#if>
             </h2>
         </div>
         <div class="desk-front sign-flow clearfix sign-flow-simple">
@@ -48,5 +58,9 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="../scripts/main/jquery.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>
+

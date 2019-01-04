@@ -2,7 +2,9 @@ package com.demo.wenda.interceptor;
 
 import com.alibaba.druid.util.StringUtils;
 import com.demo.wenda.domain.HostHolder;
+import com.demo.wenda.domain.Proof;
 import com.demo.wenda.domain.User;
+import com.demo.wenda.service.ProofService;
 import com.demo.wenda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -16,19 +18,22 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class PassportInterceptor implements HandlerInterceptor {
 
-    private UserService userService;
+    private final UserService userService;
 
-    private HostHolder hostHolder;
+    private final HostHolder hostHolder;
+
+    private final ProofService proofService;
 
     @Autowired
-    public PassportInterceptor(UserService userService, HostHolder hostHolder) {
+    public PassportInterceptor(UserService userService, HostHolder hostHolder, ProofService proofService) {
         this.userService = userService;
         this.hostHolder = hostHolder;
+        this.proofService = proofService;
     }
 
     /*
-    在处理controller之前，调用preHandle
-    */
+        在处理controller之前，调用preHandle
+        */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -37,6 +42,12 @@ public class PassportInterceptor implements HandlerInterceptor {
 
         //放入hostHolder上下文中
         hostHolder.setUsers(user);
+
+        //取出user对应的proof
+        if (user != null) {
+            Proof proof = proofService.getProofByUserId(user.getUserId());
+            hostHolder.setPoof(proof);
+        }
 
         return true;
     }

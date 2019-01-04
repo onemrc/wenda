@@ -60,6 +60,8 @@ public class IndexController {
         this.proofService = proofService;
     }
 
+    private Map<String, String> cookies; //身份验证时用到
+
 
     //    @GetMapping(value = {"/","/index"})
 //    public String index(Model model){
@@ -211,7 +213,18 @@ public class IndexController {
                            Model model) {
         if (hostHolder.getUsers() != null) {
             model.addAttribute("localUser", hostHolder.getUsers());
+            if (hostHolder.getPoof() != null) {
+                model.addAttribute("proof", hostHolder.getPoof());
+            }
         }
+
+        String checkCodePath = ValidatorUtil.getCodeAndCookie();
+//        String checkCodeCookie = "";
+        model.addAttribute("checkCodePath", checkCodePath);
+        cookies = ValidatorUtil.getCookies();
+//        model.addAttribute("checkCodeCookie",ValidatorUtil.getCookies());
+
+        logger.info("editUser");
         return "editUser";
     }
 
@@ -251,7 +264,14 @@ public class IndexController {
                             @RequestParam("proofName") String proofName,
                             @PathVariable("userId") Integer userId,
                             Model model) {
-        boolean res = ValidatorUtil.validatorReal(txtUserName, password, txtSecretCode, proofName);
+        //已认证过
+        if (proofService.getProofByAccount(txtUserName) != null) {
+            model.addAttribute("msg", "该账号已被认证！");
+            return "/editUser/" + userId;
+        }
+
+
+        boolean res = ValidatorUtil.validatorReal(txtUserName, password, txtSecretCode, proofName, cookies);
 
         if (res) {
             Proof proof = new Proof();
@@ -262,6 +282,7 @@ public class IndexController {
             }
             proof.setTypeName(proofName);
             proof.setUserId(userId);
+            proof.setAccount(txtUserName);
             proofService.addProof(proof);
             model.addAttribute("msg", "认证成功");
         } else {

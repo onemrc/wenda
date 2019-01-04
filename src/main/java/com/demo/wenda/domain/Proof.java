@@ -13,4 +13,5 @@ public class Proof {
     private Integer type;
     private String typeName;
     private Integer userId;
+    private String account;
 }

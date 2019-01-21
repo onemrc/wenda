@@ -1,15 +1,20 @@
 package com.demo.wenda.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.util.Date;
 
 /**
  * 问题表
  */
+@Document(indexName = "wenda", type = "question")
 @Data
 public class Question {
 
+    @Id
     private Integer questionId;
 
     //用户id

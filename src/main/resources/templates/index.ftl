@@ -54,8 +54,15 @@
                                         <div class="feed-meta">
                                             <div class="zm-item-meta answer-actions clearfix js-contentActions">
                                                 <div class="zm-meta-panel">
+                                                    <#if vo.isFollow??>
+                                                        <#if vo.isFollow == true>
+                                                    <a data-follow="q:link" class="follow-link zg-follow meta-item"
+                                                       href="javascript:;" id="sfb-123114">已关注</a>
+                                                        <#else >
                                                     <a data-follow="q:link" class="follow-link zg-follow meta-item" href="javascript:;" id="sfb-123114">
                                                         <i class="z-icon-follow"></i>关注问题</a>
+                                                        </#if>
+                                                    </#if>
                                                     <a href="/question/${vo.question.questionId!}" name="addcomment" class="meta-item toggle-comment js-toggleCommentBox">
                                                         <i class="z-icon-comment"></i>${vo.question.commentCount!} 条评论</a>
 

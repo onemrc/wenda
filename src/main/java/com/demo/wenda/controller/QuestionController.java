@@ -1,16 +1,15 @@
 package com.demo.wenda.controller;
 
-import com.alibaba.druid.util.StringUtils;
-import com.demo.wenda.async.EventHandler;
-import com.demo.wenda.async.EventModel;
 import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.domain.*;
+import com.demo.wenda.elasticSearch.QuestionsRepository;
 import com.demo.wenda.enums.EntityType;
-import com.demo.wenda.enums.EventType;
 import com.demo.wenda.service.*;
 import com.demo.wenda.utils.ConverterUtil;
 import com.demo.wenda.utils.RedisKeyUtil;
 import com.demo.wenda.vo.ViewObject;
+import org.apache.commons.collections.IteratorUtils;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -49,8 +49,12 @@ public class QuestionController {
 
     private final EventProducer eventProducer;
 
+    private final CollectionService collectionService;
+
+    private final QuestionsRepository questionsRepository;
+
     @Autowired
-    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService, ProofService proofService, EventProducer eventProducer) {
+    public QuestionController(QuestionService questionService, HostHolder hostHolder, CommentService commentService, TagService tagService, LikeService likeService, RedisService redisService, FollowService followService, UserService userService, ProofService proofService, EventProducer eventProducer, CollectionService collectionService, QuestionsRepository questionsRepository) {
         this.questionService = questionService;
         this.hostHolder = hostHolder;
         this.commentService = commentService;
@@ -61,6 +65,8 @@ public class QuestionController {
         this.userService = userService;
         this.proofService = proofService;
         this.eventProducer = eventProducer;
+        this.collectionService = collectionService;
+        this.questionsRepository = questionsRepository;
     }
 
     /**
@@ -184,6 +190,9 @@ public class QuestionController {
             model.addAttribute("localUser",hostHolder.getUsers());
             //当前用户是否已关注该问题
             model.addAttribute("followed",followService.isFollow(EntityType.QUESTION.getValue(),questionId,hostHolder.getUsers().getUserId()));
+
+            //当前用户是否已收藏该问题
+            model.addAttribute("isCollection", collectionService.isCollection(hostHolder.getUsers().getUserId(), EntityType.QUESTION.getValue(), questionId));
         }
 
         //这个问题的关注人人数
@@ -236,7 +245,9 @@ public class QuestionController {
                 comment.set("liked",likeService.cancelLikeToAswer(hostHolder.getUsers().getUserId(),EntityType.ENTITY_ANSWER.getValue(),answer.getCommentId()));
                 comment.set("followed",followService.follow(hostHolder.getUsers().getUserId(),answer.getCommentId(),EntityType.ENTITY_ANSWER.getValue()));
             }
-            comment.set("proofName", proofService.getProofByUserId(answer.getUserId()).getTypeName());
+//            comment.set("proofName", proofService.getProofByUserId(answer.getUserId()).getTypeName());
+
+            comment.set("userId", answer.getUserId());
 
             comments.add(comment);
         }
@@ -246,6 +257,34 @@ public class QuestionController {
         return "detail";
     }
 
+
+    /**
+     * 根据关键字查询 问题
+     * <p>
+     * 模糊查询搜索title
+     *
+     * @return
+     */
+    @GetMapping("/searchQuestion")
+    public String getList(@RequestParam("text") String text,
+                          Model model) {
+        Iterator<Question> searchRes = questionsRepository.search(QueryBuilders.multiMatchQuery(text, "title", "content")).iterator();
+
+        List<Question> questions = IteratorUtils.toList(searchRes);
+        List<ViewObject> vos = new ArrayList<>();
+        for (Question question : questions) {
+            ViewObject vo = new ViewObject();
+            vo.set("question", question);
+            User user = userService.getById(question.getUserId());
+            vo.set("user", user);
+
+            vos.add(vo);
+        }
+
+        model.addAttribute("vos", vos);
+        model.addAttribute("localUser", hostHolder.getUsers());
+        return "result";
+    }
 
 
 }

@@ -42,6 +42,19 @@
                         关注问题
                     </button>
                     </#if>
+                    <#if isCollection == true>
+                     <button class="follow-button zg-follow zg-btn-white js-follow-question"
+                             data-status="1">
+                         取消收藏
+                     </button>
+                    <#else >
+                    <form action="/addQuestionCollection" method="post" style="margin:0px;display:inline;">
+                        <input type="hidden" name="questionId" value="${question.questionId}">
+                        <button class="follow-button zg-follow zg-btn-green js-follow-question" type="submit">
+                            收藏问题
+                        </button>
+                    </form>
+                    </#if>
                     <div class="zh-question-followers-sidebar">
                         <div class="zg-gray-normal">
                             <a href="javascript:void(0);"><strong class="js-user-count">${followUserCount}</strong></a>人关注该问题
@@ -119,6 +132,11 @@
                             <a itemprop="url" class="answer-data-link meta-item" target="_blank" href="">发布于 ${(question.createTime)?string('yyyy-MM-dd HH:mm:ss')}</a>
                             <a href="" name="addcomment" class="meta-item toggle-comment js-toggleCommentBox">
                                 <i class="z-icon-comment"></i>${comment.commentCount!"0"} 条评论</a>
+
+                            <#if comment.userId == localUser.userId>
+                                <a href="#" class="meta-item toggle-comment js-toggleCommentBox">
+                                    删除评论</a>
+                            </#if>
 
                             <button class="item-collapse js-collapse" style="transition: none;">
                                 <i class="z-icon-fold"></i>收起</button>

@@ -12,4 +12,7 @@ public class UUIUtil {
         return UUID.randomUUID().toString().replace("-","");
     }
 
+    public static Long randomNum() {
+        return System.currentTimeMillis();
+    }
 }

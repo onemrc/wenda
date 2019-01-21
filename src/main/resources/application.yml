@@ -46,3 +46,9 @@ spring:
         max-idle: 8
         max-active: 10
     timeout: 1000
+
+  #  spring.data.elasticsearch.cluster-nodes = 127.0.0.1:9300
+  data:
+    elasticsearch:
+      cluster-nodes: 47.106.215.221:9300
+

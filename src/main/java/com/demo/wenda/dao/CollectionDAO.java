@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * create by: one
  * create time:2018/12/1 17:47
@@ -25,4 +27,9 @@ public interface CollectionDAO {
     @Select({"select COUNT(*) from",TABLE_NAME,"where user_id = #{userId}"})
     Integer getUserCollectionCount(int userId);
 
+    @Select({"select entity_id from", TABLE_NAME, "where user_id = #{userId} and entity_type = #{entityType}"})
+    List<String> getEntityId(int userId, int entityType);
+
+    @Select({"select collection_id from", TABLE_NAME, "where user_id = #{userId} and entity_type = #{entityType} and entity_id = #{entityId}"})
+    Integer getId(int userId, int entityType, int entityId);
 }

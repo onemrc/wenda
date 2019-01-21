@@ -2,6 +2,7 @@ package com.demo.wenda.service;
 
 import com.demo.wenda.dao.QuestionDao;
 import com.demo.wenda.domain.Question;
+import com.demo.wenda.elasticSearch.QuestionsRepository;
 import com.demo.wenda.utils.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,14 @@ public class QuestionService {
 
     private final RedisService redisService;
 
+    private final QuestionsRepository questionsRepository;
+
     @Autowired
-    public QuestionService(QuestionDao questionDao, SensitiveService sensitiveService, RedisService redisService) {
+    public QuestionService(QuestionDao questionDao, SensitiveService sensitiveService, RedisService redisService, QuestionsRepository questionsRepository) {
         this.questionDao = questionDao;
         this.sensitiveService = sensitiveService;
         this.redisService = redisService;
+        this.questionsRepository = questionsRepository;
     }
 
     public List<Question> getUserLatestQuestions(int userId, int offset, int limit) {
@@ -69,7 +73,13 @@ public class QuestionService {
 
         question.setAnonymous(1);
 
-        return questionDao.addQuestion(question) > 0 ? question.getQuestionId() : 0;
+
+        int res = questionDao.addQuestion(question) > 0 ? question.getQuestionId() : 0;
+
+        //添加索引
+        questionsRepository.save(question);
+
+        return res;
     }
 
     public Question getById(int id) {

@@ -160,7 +160,7 @@ public class FollowController {
             return ConverterUtil.getJSONString(999);
         }
 
-        boolean ret = followService.follow(hostHolder.getUsers().getUserId(), EntityType.QUESTION.getValue(), questionId);
+        boolean ret = followService.follow(hostHolder.getUsers().getUserId(), questionId, EntityType.QUESTION.getValue());
 
         //发消息给这个人
         eventProducer.fireEvent(new EventModel(EventType.FOLLOW)

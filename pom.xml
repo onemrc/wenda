@@ -157,7 +157,15 @@
 			<version>2.7.0</version>
 		</dependency>
 
-	</dependencies>
+        <!--全文搜索引擎elasticsearch-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+            <version>1.5.9.RELEASE</version>
+        </dependency>
+
+
+    </dependencies>
 
 	<build>
 		<plugins>

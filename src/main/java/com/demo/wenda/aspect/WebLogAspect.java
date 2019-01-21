@@ -1,6 +1,9 @@
 package com.demo.wenda.aspect;
 
+import com.demo.wenda.async.EventModel;
+import com.demo.wenda.async.EventProducer;
 import com.demo.wenda.controller.CollectionController;
+import com.demo.wenda.enums.EventType;
 import com.demo.wenda.service.RedisService;
 import com.demo.wenda.utils.RedisKeyUtil;
 import org.aspectj.lang.JoinPoint;
@@ -24,9 +27,12 @@ public class WebLogAspect {
 
     private final RedisService redisService;
 
+    private final EventProducer eventProducer;
+
     @Autowired
-    public WebLogAspect(RedisService redisService) {
+    public WebLogAspect(RedisService redisService, EventProducer eventProducer) {
         this.redisService = redisService;
+        this.eventProducer = eventProducer;
     }
 
     @Pointcut("execution(public * com.demo.wenda.controller.QuestionController.questionDetail(..))")
@@ -38,7 +44,9 @@ public class WebLogAspect {
 
 
     /**
-     * 每次请求问题详情后，该问题浏览数 +1
+     * 每次请求问题详情后
+     *
+     * 该问题浏览数 +1
      */
     @After("questionDetail()")
     public void doAfterQuestionDetail(JoinPoint joinPoint){
@@ -62,7 +70,9 @@ public class WebLogAspect {
     }
 
     /**
-     * 每次添加评论，该问题总评论数+1
+     * 每次添加评论之后
+     *
+     * 该问题总评论数+1
      */
     @After("questionComment()")
     public void doAfterquestionComment(JoinPoint joinPoint) {

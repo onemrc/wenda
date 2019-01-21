@@ -29,7 +29,7 @@ public class HotList {
 
     private final QuestionService questionService;
 
-    SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     public HotList(RedisService redisService, CommentService commentService, QuestionService questionService) {
@@ -70,7 +70,7 @@ public class HotList {
             float P = (float) (lookCount + likeCount * 10 + commentCount * 20);
 
             if (P == 0) {
-                P = (float) 0.1;
+                P = (float) 2;
             }
 
             //获取时间差
@@ -83,7 +83,7 @@ public class HotList {
             long from = simpleFormat.parse(newCommentTime).getTime();
             long to = simpleFormat.parse(nowDate).getTime();
 
-            float T = ((from - to) / (1000 * 60 * 60));
+            float T = ((to - from) / (1000 * 60 * 60));
 
             //重力因子
             float G = (float) 1.8;

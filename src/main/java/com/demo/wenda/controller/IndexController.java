@@ -120,6 +120,10 @@ public class IndexController {
             vo.set("question", question);
             vo.set("followCount", followService.getFollowerCount(EntityType.QUESTION.getValue(), question.getQuestionId()));
             vo.set("user", userService.getById(question.getUserId()));
+            if (hostHolder.getUsers() != null) {
+                //当前用户是否关注该问题
+                vo.set("isFollow", followService.isFollow(EntityType.QUESTION.getValue(), question.getQuestionId(), hostHolder.getUsers().getUserId()));
+            }
             vos.add(vo);
         }
         model.addAttribute("localUser",hostHolder.getUsers());
@@ -220,7 +224,11 @@ public class IndexController {
             vo.set("followed",false);
         }
 
+        //这个人发布的所有问题
+        List<Question> questions = questionService.getUserLatestQuestions(userId, 0, 100);
+
         model.addAttribute("profileUser",vo);
+        model.addAttribute("questions", questions);
         return "profile";
     }
 

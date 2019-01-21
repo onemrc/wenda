@@ -134,7 +134,7 @@
         <div class="zu-main-content">
             <div class="zu-main-content-inner">
                 <div class="zg-section" id="zh-home-list-title">
-                    <i class="zg-icon zg-icon-feedlist"></i>最新动态
+                    <i class="zg-icon zg-icon-feedlist"></i>关注动态
                     <input type="hidden" id="is-topstory">
                     <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
                         <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
